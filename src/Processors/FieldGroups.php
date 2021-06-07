@@ -66,7 +66,7 @@ class FieldGroups extends Base {
 	}
 
 	private function migrate_settings() {
-		$settings = json_decode( $this->item->post_content, true );
+		$settings = unserialize( $this->item->post_content );
 
 		// Context.
 		if ( !empty( $settings['position'] ) ) {
@@ -77,22 +77,29 @@ class FieldGroups extends Base {
 		$this->migrate_location( $settings );
 
 		update_post_meta( $this->post_id, 'settings', $settings );
+
+		$meta_box = [
+			'settings' => $settings,
+		];
+		update_post_meta( $this->post_id, 'meta_box', $meta_box );
 	}
 
 	private function migrate_location( &$settings ) {
 		$location = $settings['location'];
 		unset( $settings['location'] );
 
-		$object_type     = 'post';
-		$post_types      = [];
-		$taxonomies      = [];
-		$include_exclude = [];
+		$object_type = 'post';
+		$post_types  = [];
+		$taxonomies  = [];
 
 		foreach ( $location as $group ) {
 			foreach ( $group as $rule ) {
-				if ( $rule['param'] === 'post_type' && $rule['operator'] === '==' ) {
+				if ( $rule['param'] === 'post_type' ) {
 					$object_type = 'post';
-					$post_types[] = $rule['value'];
+
+					if ( $rule['operator'] === '==' ) {
+						$post_types[] = $rule['value'];
+					}
 				}
 
 				if ( $rule['param'] === 'attachment' ) {
