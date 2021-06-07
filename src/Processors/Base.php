@@ -2,6 +2,9 @@
 namespace MetaBox\ACF\Processors;
 
 abstract class Base {
+	protected $threshold = 10;
+	protected $item;
+
 	public function migrate() {
 		$items = $this->get_items();
 		if ( empty( $items ) ) {
@@ -13,7 +16,8 @@ abstract class Base {
 
 		$output = [];
 		foreach( $items as $item ) {
-			$output[] = $this->migrate_item( $item );
+			$this->item = $item;
+			$output[] = $this->migrate_item();
 		}
 		$output = array_filter( $output );
 
@@ -25,5 +29,5 @@ abstract class Base {
 	}
 
 	abstract protected function get_items();
-	abstract protected function migrate_item( $item );
+	abstract protected function migrate_item();
 }

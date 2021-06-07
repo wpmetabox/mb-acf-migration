@@ -6,7 +6,7 @@ class Users extends Base {
 
 	}
 
-	protected function migrate_item( $item ) {
+	protected function migrate_item() {
 
 	}
 }
