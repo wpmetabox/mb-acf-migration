@@ -1,0 +1,21 @@
+{
+  "name": "meta-box/mb-acf-migration",
+  "type": "wordpress-plugin",
+  "keywords": [
+    "wordpress",
+    "wordpress-plugin",
+    "acf",
+    "advanced-custom-fields",
+    "meta-box",
+    "custom-fields",
+    "custom-field"
+  ],
+  "description": "Migrate ACF custom fields to Meta Box",
+  "homepage": "https://metabox.io",
+  "license": "GPL-2.0",
+  "autoload": {
+    "psr-4": {
+      "MetaBox\\ACFMigration\\": "src/"
+    }
+  }
+}
