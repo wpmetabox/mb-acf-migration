@@ -7,6 +7,7 @@ class FieldGroups extends Base {
 	private $post_id;
 	private $settings = [];
 	private $fields   = [];
+	private $field;
 
 	protected function get_items() {
 		$query = new WP_Query( [
@@ -29,11 +30,13 @@ class FieldGroups extends Base {
 
 		$this->create_post();
 		$this->migrate_settings();
+		$this->migrate_fields();
 
 		$meta_box = array_merge( [
 			'id'       => $this->item->post_name,
 			'title'    => $this->item->post_title,
-		], $this->settings, $this->fields );
+			'fields'   => $this->fields,
+		], $this->settings );
 		update_post_meta( $this->post_id, 'meta_box', $meta_box );
 
 		// $this->delete_post();
@@ -70,7 +73,7 @@ class FieldGroups extends Base {
 			$this->post_id = wp_insert_post( $data );
 		}
 
-		add_post_meta( $this->item->ID, 'meta_box_id', $this->post_id );
+		update_post_meta( $this->item->ID, 'meta_box_id', $this->post_id );
 	}
 
 	private function delete_post() {
@@ -145,5 +148,29 @@ class FieldGroups extends Base {
 			// User, block, comment.
 			$this->settings['type'] = $object_type;
 		}
+	}
+
+	private function migrate_fields() {
+		$fields = $this->get_fields();
+		foreach ( $fields as $field ) {
+			$this->field = $field;
+			$this->migrate_field();
+		}
+	}
+
+	private function get_fields() {
+		$query = new WP_Query( [
+			'post_type'      => 'acf-field',
+			'post_status'    => 'any',
+			'posts_per_page' => -1,
+			'no_found_rows'  => true,
+			'post_parent'    => $this->item->ID,
+		] );
+
+		return $query->posts;
+	}
+
+	private function migrate_field() {
+
 	}
 }
