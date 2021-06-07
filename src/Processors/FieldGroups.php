@@ -1,6 +1,7 @@
 <?php
 namespace MetaBox\ACF\Processors;
 
+use MetaBox\Support\Arr;
 use WP_Query;
 
 class FieldGroups extends Base {
@@ -156,6 +157,8 @@ class FieldGroups extends Base {
 			$this->field = $field;
 			$this->migrate_field();
 		}
+
+		update_post_meta( $this->post_id, 'fields', $this->fields );
 	}
 
 	private function get_fields() {
@@ -165,12 +168,23 @@ class FieldGroups extends Base {
 			'posts_per_page' => -1,
 			'no_found_rows'  => true,
 			'post_parent'    => $this->item->ID,
+			'order'          => 'ASC',
 		] );
 
 		return $query->posts;
 	}
 
 	private function migrate_field() {
+		$settings         = unserialize( $this->field->post_content );
+		$settings['name'] = $this->field->post_title;
+		$settings['id']   = $this->field->post_name;
+		Arr::change_key( $settings, 'instructions', 'label_description' );
+		Arr::change_key( $settings, 'default_value', 'std' );
+		Arr::change_key( $settings, 'maxlength', 'limit' );
 
+		$settings['_id']    = $settings['type'] . '_' . uniqid();
+		$settings['_state'] = 'collapse';
+
+		$this->fields[] = $settings;
 	}
 }
