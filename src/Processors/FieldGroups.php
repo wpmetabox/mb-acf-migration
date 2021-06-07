@@ -6,7 +6,7 @@ use WP_Query;
 class FieldGroups extends Base {
 	private $post_id;
 	private $settings = [];
-	private $fields = [];
+	private $fields   = [];
 
 	protected function get_items() {
 		$query = new WP_Query( [
@@ -21,6 +21,10 @@ class FieldGroups extends Base {
 	}
 
 	protected function migrate_item() {
+		$this->post_id  = null;
+		$this->settings = [];
+		$this->fields   = [];
+
 		// $this->switch_post_type();
 
 		$this->create_post();
