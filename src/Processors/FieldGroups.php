@@ -5,6 +5,8 @@ use WP_Query;
 
 class FieldGroups extends Base {
 	private $post_id;
+	private $settings = [];
+	private $fields = [];
 
 	protected function get_items() {
 		$query = new WP_Query( [
@@ -23,6 +25,12 @@ class FieldGroups extends Base {
 
 		$this->create_post();
 		$this->migrate_settings();
+
+		$meta_box = array_merge( [
+			'id'       => $this->item->post_name,
+			'title'    => $this->item->post_title,
+		], $this->settings, $this->fields );
+		update_post_meta( $this->post_id, 'meta_box', $meta_box );
 
 		// $this->delete_post();
 	}
@@ -66,27 +74,22 @@ class FieldGroups extends Base {
 	}
 
 	private function migrate_settings() {
-		$settings = unserialize( $this->item->post_content );
+		$this->settings = unserialize( $this->item->post_content );
 
 		// Context.
-		if ( !empty( $settings['position'] ) ) {
-			$settings['context'] = $settings['position'] === 'acf_after_title' ? 'after_title' : $settings['position'];
-			unset( $settings['position'] );
+		if ( !empty( $this->settings['position'] ) ) {
+			$this->settings['context'] = $this->settings['position'] === 'acf_after_title' ? 'after_title' : $this->settings['position'];
+			unset( $this->settings['position'] );
 		}
 
-		$this->migrate_location( $settings );
+		$this->migrate_location();
 
-		update_post_meta( $this->post_id, 'settings', $settings );
-
-		$meta_box = [
-			'settings' => $settings,
-		];
-		update_post_meta( $this->post_id, 'meta_box', $meta_box );
+		update_post_meta( $this->post_id, 'settings', $this->settings );
 	}
 
-	private function migrate_location( &$settings ) {
-		$location = $settings['location'];
-		unset( $settings['location'] );
+	private function migrate_location() {
+		$location = $this->settings['location'];
+		unset( $this->settings['location'] );
 
 		$object_type = 'post';
 		$post_types  = [];
@@ -130,13 +133,13 @@ class FieldGroups extends Base {
 		$taxonomies = array_unique( $taxonomies );
 
 		if ( $object_type === 'post' ) {
-			$settings['object_type'] = 'post';
-			$settings['post_types'] = $post_types;
+			$this->settings['object_type'] = 'post';
+			$this->settings['post_types'] = $post_types;
 		} elseif ( $object_type === 'taxonomy' ) {
-			$settings['taxonomies'] = $taxonomies;
+			$this->settings['taxonomies'] = $taxonomies;
 		} else {
 			// User, block, comment.
-			$settings['type'] = $object_type;
+			$this->settings['type'] = $object_type;
 		}
 	}
 }
