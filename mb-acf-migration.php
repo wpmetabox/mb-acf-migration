@@ -11,4 +11,15 @@
  * Domain Path: /languages/
  */
 
+namespace MetaBox\ACF;
+
 defined( 'ABSPATH' ) || die;
+
+require __DIR__ . '/vendor/autoload.php';
+
+define( 'MBACF_DIR', __DIR__ );
+
+if ( is_admin() ) {
+    new AdminPage;
+    new Ajax;
+}
