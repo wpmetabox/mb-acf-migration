@@ -22,9 +22,14 @@
 		{
 			"type": "git",
 			"url": "https://github.com/wpmetabox/support.git"
+		},
+    {
+			"type": "git",
+			"url": "git@github.com:wpmetabox/mbb-parser.git"
 		}
 	],
   "require": {
-		"meta-box/support": "dev-master"
+		"meta-box/support": "dev-master",
+    "meta-box/mbb-parser": "dev-master"
 	}
 }

@@ -3,6 +3,9 @@ namespace MetaBox\ACF\Processors;
 
 use MetaBox\Support\Arr;
 use WP_Query;
+use MBBParser\Parsers\MetaBox;
+use MetaBox\ACF\Modules\ConditionalLogic;
+use MetaBox\ACF\Modules\IncludeExclude;
 
 class FieldGroups extends Base {
 	private $post_id;
@@ -33,12 +36,16 @@ class FieldGroups extends Base {
 		$this->migrate_settings();
 		$this->migrate_fields();
 
-		$meta_box = array_merge( [
-			'id'       => $this->item->post_name,
-			'title'    => $this->item->post_title,
-			'fields'   => $this->fields,
-		], $this->settings );
-		update_post_meta( $this->post_id, 'meta_box', $meta_box );
+		$data = [
+			'post_name'  => $this->item->post_name,
+			'post_title' => $this->item->post_title,
+			'fields'     => $this->fields,
+			'settings'   => $this->settings,
+		];
+
+		$parser = new MetaBox( $data );
+		$parser->parse();
+		update_post_meta( $this->post_id, 'meta_box', $parser->get_settings() );
 
 		// $this->delete_post();
 	}
@@ -96,10 +103,8 @@ class FieldGroups extends Base {
 	}
 
 	private function migrate_location() {
-		$location = $this->settings['location'];
-		unset( $this->settings['location'] );
-
-		$object_type = 'post';
+		$location    = $this->settings['location'];
+		$object_type = null;
 		$post_types  = [];
 		$taxonomies  = [];
 
@@ -119,7 +124,7 @@ class FieldGroups extends Base {
 				}
 
 				if ( $rule['param'] === 'taxonomy' ) {
-					$object_type = 'taxonomy';
+					$object_type = 'term';
 					$taxonomies[] = $rule['value'];
 				}
 
@@ -140,15 +145,18 @@ class FieldGroups extends Base {
 		$post_types = array_unique( $post_types );
 		$taxonomies = array_unique( $taxonomies );
 
+		$this->settings['object_type'] = $object_type;
+
 		if ( $object_type === 'post' ) {
-			$this->settings['object_type'] = 'post';
 			$this->settings['post_types'] = $post_types;
-		} elseif ( $object_type === 'taxonomy' ) {
+		} elseif ( $object_type === 'term' ) {
 			$this->settings['taxonomies'] = $taxonomies;
-		} else {
-			// User, block, comment.
-			$this->settings['type'] = $object_type;
 		}
+
+		$include_exclude = new IncludeExclude( $location );
+		$this->settings['include_exclude'] = $include_exclude->migrate();
+
+		unset( $this->settings['location'] );
 	}
 
 	private function migrate_fields() {
@@ -184,6 +192,9 @@ class FieldGroups extends Base {
 
 		$settings['_id']    = $settings['type'] . '_' . uniqid();
 		$settings['_state'] = 'collapse';
+
+		$conditional_logic = new ConditionalLogic( $settings );
+		$conditional_logic->migrate();
 
 		$this->fields[] = $settings;
 	}
