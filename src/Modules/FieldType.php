@@ -99,4 +99,23 @@ class FieldType {
 		unset( $this->settings['media_upload'] );
 		unset( $this->settings['delay'] );
 	}
+
+	private function migrate_gallery() {
+		$this->settings['type'] = 'image_advanced';
+		Arr::change_key( $this->settings, 'preview_size', 'image_size' );
+		$this->settings['add_to'] = $this->settings['insert'] === 'append' ? 'end' : 'beginning';
+
+		unset( $this->settings['return_format'] );
+		unset( $this->settings['insert'] );
+		unset( $this->settings['library'] );
+		unset( $this->settings['min'] );
+		unset( $this->settings['max'] );
+		unset( $this->settings['min_width'] );
+		unset( $this->settings['min_height'] );
+		unset( $this->settings['min_size'] );
+		unset( $this->settings['max_width'] );
+		unset( $this->settings['max_height'] );
+		unset( $this->settings['max_size'] );
+		unset( $this->settings['mime_types'] );
+	}
 }
