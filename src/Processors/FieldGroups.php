@@ -185,7 +185,7 @@ class FieldGroups extends Base {
 	private function migrate_field() {
 		$settings         = unserialize( $this->field->post_content );
 		$settings['name'] = $this->field->post_title;
-		$settings['id']   = $this->field->post_name;
+		$settings['id']   = $this->field->post_excerpt;
 		Arr::change_key( $settings, 'instructions', 'label_description' );
 		Arr::change_key( $settings, 'default_value', 'std' );
 		Arr::change_key( $settings, 'maxlength', 'limit' );
