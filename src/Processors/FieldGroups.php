@@ -1,10 +1,10 @@
 <?php
 namespace MetaBox\ACF\Processors;
 
-use MetaBox\Support\Arr;
 use WP_Query;
 use MBBParser\Parsers\MetaBox;
 use MetaBox\ACF\Modules\ConditionalLogic;
+use MetaBox\ACF\Modules\FieldType;
 use MetaBox\ACF\Modules\IncludeExclude;
 
 class FieldGroups extends Base {
@@ -186,12 +186,9 @@ class FieldGroups extends Base {
 		$settings         = unserialize( $this->field->post_content );
 		$settings['name'] = $this->field->post_title;
 		$settings['id']   = $this->field->post_excerpt;
-		Arr::change_key( $settings, 'instructions', 'label_description' );
-		Arr::change_key( $settings, 'default_value', 'std' );
-		Arr::change_key( $settings, 'maxlength', 'limit' );
 
-		$settings['_id']    = $settings['type'] . '_' . uniqid();
-		$settings['_state'] = 'collapse';
+		$field_type = new FieldType( $settings );
+		$settings   = $field_type->migrate();
 
 		$conditional_logic = new ConditionalLogic( $settings );
 		$conditional_logic->migrate();
