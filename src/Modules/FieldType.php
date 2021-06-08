@@ -118,4 +118,34 @@ class FieldType {
 		unset( $this->settings['max_size'] );
 		unset( $this->settings['mime_types'] );
 	}
+
+	private function migrate_select() {
+		$values = [];
+		foreach ( $this->settings['choices'] as $key => $value ) {
+			$values[] = "$key: $value";
+		}
+		$this->settings['options'] = implode( "\n", $values );
+
+		if ( $this->settings['allow_null'] ) {
+			$this->settings['placeholder'] = __( '- Select -', 'mb-acf-migration' );
+		}
+
+		$this->settings['multiple'] = (bool) $this->settings['multiple'];
+		if ( $this->settings['multiple'] ) {
+			$this->settings['std'] = (array) $this->settings['std'];
+			$this->settings['std'] = reset( $this->settings['std'] );
+		} else {
+			$this->settings['std'] = (string) $this->settings['std'];
+		}
+
+		if ( $this->settings['ui'] ) {
+			$this->settings['type'] = 'select_advanced';
+		}
+
+		unset( $this->settings['choices'] );
+		unset( $this->settings['allow_null'] );
+		unset( $this->settings['ui'] );
+		unset( $this->settings['ajax'] );
+		unset( $this->settings['return_format'] );
+	}
 }
