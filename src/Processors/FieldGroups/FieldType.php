@@ -291,4 +291,25 @@ class FieldType {
 		unset( $this->role );
 		unset( $this->allow_null );
 	}
+
+	private function migrate_google_map() {
+		$this->type = 'map';
+		if ( $this->center_lat && $this->center_lng ) {
+			$std = "$this->center_lat,$this->center_lng";
+
+			if ( $this->zoom ) {
+				$std .= ",$this->zoom";
+			}
+
+			$this->std = $std;
+		}
+
+		$api = apply_filters( 'acf/fields/google_map/api', [] );
+		$this->api_key = $api['key'] ?? '';
+
+		unset( $this->center_lat );
+		unset( $this->center_lng );
+		unset( $this->zoom );
+		unset( $this->height );
+	}
 }

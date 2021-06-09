@@ -190,6 +190,17 @@ class FieldGroups extends Base {
 		$settings['name'] = $this->field->post_title;
 		$settings['id']   = $this->field->post_excerpt;
 
+		if ( $settings['type'] === 'google_map' ) {
+			$address_field = [
+				'id'   => $settings['id'] . '_address',
+				'type' => 'text',
+				'name' => $settings['name'] . ' ' . __( 'Address', 'mb-acf-migration' ),
+			];
+			$this->fields[] = $address_field;
+
+			$settings['address_field'] = $address_field['id'];
+		}
+
 		$field_type = new FieldGroups\FieldType( $settings );
 		$settings   = $field_type->migrate();
 
