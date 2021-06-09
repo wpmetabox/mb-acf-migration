@@ -174,6 +174,7 @@ class FieldGroups extends Base {
 			'no_found_rows'  => true,
 			'post_parent'    => $this->item->ID,
 			'order'          => 'ASC',
+			'orderby'        => 'menu_order',
 		] );
 
 		return $query->posts;
@@ -182,7 +183,7 @@ class FieldGroups extends Base {
 	private function migrate_field() {
 		$settings = unserialize( $this->field->post_content );
 
-		$ignore_types = ['link'];
+		$ignore_types = ['link', 'accordion'];
 		if ( in_array( $settings['type'], $ignore_types ) ) {
 			return;
 		}

@@ -371,7 +371,7 @@ class FieldType {
 		$this->type = 'color';
 	}
 
-	public function migrate_message() {
+	private function migrate_message() {
 		$this->type = 'custom_html';
 
 		$std = $this->message;
@@ -391,5 +391,10 @@ class FieldType {
 		unset( $this->message );
 		unset( $this->new_lines );
 		unset( $this->esc_html );
+	}
+
+	private function migrate_tab() {
+		unset( $this->placement );
+		unset( $this->endpoint );
 	}
 }
