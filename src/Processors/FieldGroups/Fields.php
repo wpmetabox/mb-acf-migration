@@ -39,7 +39,7 @@ class Fields {
 	private function migrate_field() {
 		$settings = unserialize( $this->field->post_content );
 
-		$ignore_types = ['link', 'accordion'];
+		$ignore_types = ['link', 'accordion', 'clone'];
 		if ( in_array( $settings['type'], $ignore_types ) ) {
 			return;
 		}
