@@ -252,4 +252,21 @@ class FieldType {
 		unset( $this->settings['min'] );
 		unset( $this->settings['max'] );
 	}
+
+	private function migrate_taxonomy() {
+		$types = [
+			'checkbox'     => 'checkbox_list',
+			'multi_select' => 'select_advanced',
+		];
+		if ( isset( $types[ $this->settings['field_type'] ] ) ) {
+			$this->settings['field_type'] = $types[ $this->settings['field_type'] ];
+		}
+		Arr::change_key( $this->settings, 'add_term', 'add_new' );
+
+		$this->settings['multiple'] = (bool) $this->settings['multiple'];
+
+		unset( $this->settings['save_terms'] );
+		unset( $this->settings['load_terms'] );
+		unset( $this->settings['allow_null'] );
+	}
 }
