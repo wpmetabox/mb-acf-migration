@@ -10,11 +10,26 @@ class FieldType {
 		$this->settings = $settings;
 	}
 
+	public function __get( $name ) {
+		return $this->settings[ $name ] ?? null;
+	}
+
+	public function __set( $name, $value ) {
+		return $this->settings[ $name ] = $value;
+	}
+
+	public function __isset( $name ) {
+		return isset( $this->settings[ $name ] );
+	}
+
+	public function __unset( $name ) {
+		unset( $this->settings[ $name ] );
+	}
+
 	public function migrate() {
 		$this->migrate_general_settings();
 
-		$type   = $this->settings['type'];
-		$method = "migrate_$type";
+		$method = "migrate_{$this->type}";
 		if ( method_exists( $this, $method ) ) {
 			$this->$method();
 		}
@@ -27,40 +42,40 @@ class FieldType {
 		Arr::change_key( $this->settings, 'default_value', 'std' );
 		Arr::change_key( $this->settings, 'maxlength', 'limit' );
 
-		$this->settings['_id']    = $this->settings['type'] . '_' . uniqid();
-		$this->settings['_state'] = 'collapse';
+		$this->_id    = $this->type . '_' . uniqid();
+		$this->_state = 'collapse';
 
-		unset( $this->settings['wrapper'] );
-		unset( $this->settings['return_format'] );
+		unset( $this->wrapper );
+		unset( $this->return_format );
 	}
 
 	private function migrate_image() {
-		$this->settings['type'] = 'single_image';
+		$this->type = 'single_image';
 		Arr::change_key( $this->settings, 'preview_size', 'image_size' );
 
-		unset( $this->settings['library'] );
-		unset( $this->settings['min_width'] );
-		unset( $this->settings['min_height'] );
-		unset( $this->settings['min_size'] );
-		unset( $this->settings['max_width'] );
-		unset( $this->settings['max_height'] );
-		unset( $this->settings['max_size'] );
-		unset( $this->settings['mime_types'] );
+		unset( $this->library );
+		unset( $this->min_width );
+		unset( $this->min_height );
+		unset( $this->min_size );
+		unset( $this->max_width );
+		unset( $this->max_height );
+		unset( $this->max_size );
+		unset( $this->mime_types );
 	}
 
 	private function migrate_file() {
-		$this->settings['type'] = 'file_advanced';
-		$this->settings['max_file_uploads'] = 1;
+		$this->type = 'file_advanced';
+		$this->max_file_uploads = 1;
 
-		unset( $this->settings['library'] );
-		unset( $this->settings['min_size'] );
-		unset( $this->settings['max_size'] );
-		unset( $this->settings['mime_types'] );
+		unset( $this->library );
+		unset( $this->min_size );
+		unset( $this->max_size );
+		unset( $this->mime_types );
 	}
 
 	private function migrate_wysiwyg() {
 		$options = [];
-		if ( $this->settings['toolbar'] === 'basic' ) {
+		if ( $this->toolbar === 'basic' ) {
 			$id = uniqid();
 			$options[ $id ] = [
 				'id'    => $id,
@@ -68,7 +83,7 @@ class FieldType {
 				'value' => true,
 			];
 		}
-		if ( $this->settings['tabs'] === 'visual' ) {
+		if ( $this->tabs === 'visual' ) {
 			$id = uniqid();
 			$options[ $id ] = [
 				'id'    => $id,
@@ -76,7 +91,7 @@ class FieldType {
 				'value' => false,
 			];
 		}
-		if ( $this->settings['tabs'] === 'text' ) {
+		if ( $this->tabs === 'text' ) {
 			$id = uniqid();
 			$options[ $id ] = [
 				'id'    => $id,
@@ -89,111 +104,111 @@ class FieldType {
 		$options[ $id ] = [
 			'id'    => $id,
 			'key'   => 'media_buttons',
-			'value' => (bool) $this->settings['media_upload'],
+			'value' => (bool) $this->media_upload,
 		];
 
-		$this->settings['options'] = $options;
+		$this->options = $options;
 
-		unset( $this->settings['toolbar'] );
-		unset( $this->settings['media_upload'] );
-		unset( $this->settings['delay'] );
+		unset( $this->toolbar );
+		unset( $this->media_upload );
+		unset( $this->delay );
 	}
 
 	private function migrate_gallery() {
-		$this->settings['type'] = 'image_advanced';
+		$this->type = 'image_advanced';
 		Arr::change_key( $this->settings, 'preview_size', 'image_size' );
-		$this->settings['add_to'] = $this->settings['insert'] === 'append' ? 'end' : 'beginning';
+		$this->add_to = $this->insert === 'append' ? 'end' : 'beginning';
 
-		unset( $this->settings['insert'] );
-		unset( $this->settings['library'] );
-		unset( $this->settings['min'] );
-		unset( $this->settings['max'] );
-		unset( $this->settings['min_width'] );
-		unset( $this->settings['min_height'] );
-		unset( $this->settings['min_size'] );
-		unset( $this->settings['max_width'] );
-		unset( $this->settings['max_height'] );
-		unset( $this->settings['max_size'] );
-		unset( $this->settings['mime_types'] );
+		unset( $this->insert );
+		unset( $this->library );
+		unset( $this->min );
+		unset( $this->max );
+		unset( $this->min_width );
+		unset( $this->min_height );
+		unset( $this->min_size );
+		unset( $this->max_width );
+		unset( $this->max_height );
+		unset( $this->max_size );
+		unset( $this->mime_types );
 	}
 
 	private function migrate_select() {
 		$this->migrate_choices();
 
-		if ( $this->settings['allow_null'] ) {
-			$this->settings['placeholder'] = __( '- Select -', 'mb-acf-migration' );
+		if ( $this->allow_null ) {
+			$this->placeholder = __( '- Select -', 'mb-acf-migration' );
 		}
 
-		$this->settings['multiple'] = (bool) $this->settings['multiple'];
-		if ( $this->settings['multiple'] ) {
-			$this->settings['std'] = (array) $this->settings['std'];
-			$this->settings['std'] = reset( $this->settings['std'] );
+		$this->multiple = (bool) $this->multiple;
+		if ( $this->multiple ) {
+			$this->std = (array) $this->std;
+			$this->std = reset( $this->settings['std'] );
 		} else {
-			$this->settings['std'] = (string) $this->settings['std'];
+			$this->std = (string) $this->std;
 		}
 
-		if ( $this->settings['ui'] ) {
-			$this->settings['type'] = 'select_advanced';
+		if ( $this->ui ) {
+			$this->type = 'select_advanced';
 		}
 
-		unset( $this->settings['allow_null'] );
-		unset( $this->settings['ui'] );
-		unset( $this->settings['ajax'] );
+		unset( $this->allow_null );
+		unset( $this->ui );
+		unset( $this->ajax );
 	}
 
 	private function migrate_checkbox() {
-		$this->settings['type'] = 'checkbox_list';
+		$this->type = 'checkbox_list';
 
 		$this->migrate_choices();
 
-		$this->settings['std'] = implode( "\n", (array) $this->settings['std'] );
+		$this->std = implode( "\n", (array) $this->std );
 
 		Arr::change_key( $this->settings, 'toggle', 'select_all_none' );
-		if ( $this->settings['layout'] === 'horizontal' ) {
-			$this->settings['inline'] = true;
+		if ( $this->layout === 'horizontal' ) {
+			$this->inline = true;
 		}
 
-		unset( $this->settings['layout'] );
-		unset( $this->settings['allow_custom'] );
-		unset( $this->settings['save_custom'] );
+		unset( $this->layout );
+		unset( $this->allow_custom );
+		unset( $this->save_custom );
 	}
 
 	private function migrate_radio() {
 		$this->migrate_choices();
 
-		if ( $this->settings['layout'] === 'horizontal' ) {
-			$this->settings['inline'] = true;
+		if ( $this->layout === 'horizontal' ) {
+			$this->inline = true;
 		}
 
-		unset( $this->settings['allow_null'] );
-		unset( $this->settings['other_choice'] );
-		unset( $this->settings['layout'] );
-		unset( $this->settings['save_other_choice'] );
+		unset( $this->allow_null );
+		unset( $this->other_choice );
+		unset( $this->layout );
+		unset( $this->save_other_choice );
 	}
 
 	private function migrate_button_group() {
 		$this->migrate_choices();
 
-		if ( $this->settings['layout'] === 'horizontal' ) {
-			$this->settings['inline'] = true;
+		if ( $this->layout === 'horizontal' ) {
+			$this->inline = true;
 		}
 
-		unset( $this->settings['allow_null'] );
-		unset( $this->settings['layout'] );
+		unset( $this->allow_null );
+		unset( $this->layout );
 	}
 
 	private function migrate_choices() {
 		$values = [];
-		foreach ( $this->settings['choices'] as $key => $value ) {
+		foreach ( $this->choices as $key => $value ) {
 			$values[] = "$key: $value";
 		}
-		$this->settings['options'] = implode( "\n", $values );
+		$this->options = implode( "\n", $values );
 
-		unset( $this->settings['choices'] );
+		unset( $this->choices );
 	}
 
 	private function migrate_true_false() {
-		$this->settings['type'] = $this->settings['ui'] ? 'switch' : 'checkbox';
+		$this->type = $this->ui ? 'switch' : 'checkbox';
 
 		Arr::change_key( $this->settings, 'ui_on_text', 'on_label' );
 		Arr::change_key( $this->settings, 'ui_off_text', 'off_label' );
@@ -201,11 +216,11 @@ class FieldType {
 	}
 
 	private function migrate_post_object() {
-		$this->settings['type'] = 'post';
+		$this->type = 'post';
 
-		if ( isset( $this->settings['taxonomy'] ) && is_array( $this->settings['taxonomy'] ) ) {
+		if ( isset( $this->taxonomy ) && is_array( $this->taxonomy ) ) {
 			$query_args = [];
-			foreach ( $this->settings['taxonomy'] as $k => $item ) {
+			foreach ( $this->taxonomy as $k => $item ) {
 				list( $taxonomy, $slug ) = explode( ':', $item );
 
 				$id = uniqid();
@@ -230,27 +245,27 @@ class FieldType {
 				];
 			}
 
-			$this->settings['query_args'] = $query_args;
+			$this->query_args = $query_args;
 		}
 
-		$this->settings['multiple'] = (bool) $this->settings['multiple'];
+		$this->multiple = (bool) $this->multiple;
 
-		unset( $this->settings['allow_null'] );
-		unset( $this->settings['ui'] );
+		unset( $this->allow_null );
+		unset( $this->ui );
 	}
 
 	private function migrate_page_link() {
 		$this->migrate_post_object();
 
-		unset( $this->settings['allow_archives'] );
+		unset( $this->allow_archives );
 	}
 
 	private function migrate_relationship() {
 		$this->migrate_post_object();
 
-		unset( $this->settings['elements'] );
-		unset( $this->settings['min'] );
-		unset( $this->settings['max'] );
+		unset( $this->elements );
+		unset( $this->min );
+		unset( $this->max );
 	}
 
 	private function migrate_taxonomy() {
@@ -258,15 +273,22 @@ class FieldType {
 			'checkbox'     => 'checkbox_list',
 			'multi_select' => 'select_advanced',
 		];
-		if ( isset( $types[ $this->settings['field_type'] ] ) ) {
-			$this->settings['field_type'] = $types[ $this->settings['field_type'] ];
+		if ( isset( $types[ $this->field_type ] ) ) {
+			$this->field_type = $types[ $this->field_type ];
 		}
 		Arr::change_key( $this->settings, 'add_term', 'add_new' );
 
-		$this->settings['multiple'] = (bool) $this->settings['multiple'];
+		$this->multiple = (bool) $this->multiple;
 
-		unset( $this->settings['save_terms'] );
-		unset( $this->settings['load_terms'] );
-		unset( $this->settings['allow_null'] );
+		unset( $this->save_terms );
+		unset( $this->load_terms );
+		unset( $this->allow_null );
+	}
+
+	private function migrate_user() {
+		$this->multiple = (bool) $this->multiple;
+
+		unset( $this->role );
+		unset( $this->allow_null );
 	}
 }
