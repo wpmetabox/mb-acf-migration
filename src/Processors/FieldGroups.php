@@ -180,7 +180,13 @@ class FieldGroups extends Base {
 	}
 
 	private function migrate_field() {
-		$settings         = unserialize( $this->field->post_content );
+		$settings = unserialize( $this->field->post_content );
+
+		$ignore_types = ['link'];
+		if ( in_array( $settings['type'], $ignore_types ) ) {
+			return;
+		}
+
 		$settings['name'] = $this->field->post_title;
 		$settings['id']   = $this->field->post_excerpt;
 

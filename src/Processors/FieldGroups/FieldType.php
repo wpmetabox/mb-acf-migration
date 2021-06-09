@@ -199,4 +199,43 @@ class FieldType {
 		Arr::change_key( $this->settings, 'ui_off_text', 'off_label' );
 		unset( $this->message );
 	}
+
+	private function migrate_post_object() {
+		$this->settings['type'] = 'post';
+
+		if ( isset( $this->settings['taxonomy'] ) && is_array( $this->settings['taxonomy'] ) ) {
+			$query_args = [];
+			foreach ( $this->settings['taxonomy'] as $k => $item ) {
+				list( $taxonomy, $slug ) = explode( ':', $item );
+
+				$id = uniqid();
+				$query_args[ $id ] = [
+					'id'    => $id,
+					'key'   => "tax_query.$k.taxonomy",
+					'value' => $taxonomy,
+				];
+
+				$id = uniqid();
+				$query_args[ $id ] = [
+					'id'    => $id,
+					'key'   => "tax_query.$k.field",
+					'value' => 'slug',
+				];
+
+				$id = uniqid();
+				$query_args[ $id ] = [
+					'id'    => $id,
+					'key'   => "tax_query.$k.terms",
+					'value' => $slug,
+				];
+			}
+
+			$this->settings['query_args'] = $query_args;
+		}
+
+		$this->settings['multiple'] = (bool) $this->settings['multiple'];
+
+		unset( $this->settings['allow_null'] );
+		unset( $this->settings['ui'] );
+	}
 }
