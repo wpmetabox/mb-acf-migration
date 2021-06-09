@@ -366,4 +366,8 @@ class FieldType {
 		unset( $this->display_format );
 		unset( $this->first_day );
 	}
+
+	private function migrate_color_picker() {
+		$this->type = 'color';
+	}
 }
