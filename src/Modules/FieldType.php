@@ -31,13 +31,13 @@ class FieldType {
 		$this->settings['_state'] = 'collapse';
 
 		unset( $this->settings['wrapper'] );
+		unset( $this->settings['return_format'] );
 	}
 
 	private function migrate_image() {
 		$this->settings['type'] = 'single_image';
 		Arr::change_key( $this->settings, 'preview_size', 'image_size' );
 
-		unset( $this->settings['return_format'] );
 		unset( $this->settings['library'] );
 		unset( $this->settings['min_width'] );
 		unset( $this->settings['min_height'] );
@@ -52,7 +52,6 @@ class FieldType {
 		$this->settings['type'] = 'file_advanced';
 		$this->settings['max_file_uploads'] = 1;
 
-		unset( $this->settings['return_format'] );
 		unset( $this->settings['library'] );
 		unset( $this->settings['min_size'] );
 		unset( $this->settings['max_size'] );
@@ -105,7 +104,6 @@ class FieldType {
 		Arr::change_key( $this->settings, 'preview_size', 'image_size' );
 		$this->settings['add_to'] = $this->settings['insert'] === 'append' ? 'end' : 'beginning';
 
-		unset( $this->settings['return_format'] );
 		unset( $this->settings['insert'] );
 		unset( $this->settings['library'] );
 		unset( $this->settings['min'] );
@@ -120,11 +118,7 @@ class FieldType {
 	}
 
 	private function migrate_select() {
-		$values = [];
-		foreach ( $this->settings['choices'] as $key => $value ) {
-			$values[] = "$key: $value";
-		}
-		$this->settings['options'] = implode( "\n", $values );
+		$this->migrate_choices();
 
 		if ( $this->settings['allow_null'] ) {
 			$this->settings['placeholder'] = __( '- Select -', 'mb-acf-migration' );
@@ -142,10 +136,48 @@ class FieldType {
 			$this->settings['type'] = 'select_advanced';
 		}
 
-		unset( $this->settings['choices'] );
 		unset( $this->settings['allow_null'] );
 		unset( $this->settings['ui'] );
 		unset( $this->settings['ajax'] );
-		unset( $this->settings['return_format'] );
+	}
+
+	private function migrate_checkbox() {
+		$this->settings['type'] = 'checkbox_list';
+
+		$this->migrate_choices();
+
+		$this->settings['std'] = implode( "\n", (array) $this->settings['std'] );
+
+		Arr::change_key( $this->settings, 'toggle', 'select_all_none' );
+		if ( $this->settings['layout'] === 'horizontal' ) {
+			$this->settings['inline'] = true;
+		}
+
+		unset( $this->settings['layout'] );
+		unset( $this->settings['allow_custom'] );
+		unset( $this->settings['save_custom'] );
+	}
+
+	private function migrate_radio() {
+		$this->migrate_choices();
+
+		if ( $this->settings['layout'] === 'horizontal' ) {
+			$this->settings['inline'] = true;
+		}
+
+		unset( $this->settings['allow_null'] );
+		unset( $this->settings['other_choice'] );
+		unset( $this->settings['layout'] );
+		unset( $this->settings['save_other_choice'] );
+	}
+
+	private function migrate_choices() {
+		$values = [];
+		foreach ( $this->settings['choices'] as $key => $value ) {
+			$values[] = "$key: $value";
+		}
+		$this->settings['options'] = implode( "\n", $values );
+
+		unset( $this->settings['choices'] );
 	}
 }
