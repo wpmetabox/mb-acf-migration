@@ -191,4 +191,12 @@ class FieldType {
 
 		unset( $this->settings['choices'] );
 	}
+
+	private function migrate_true_false() {
+		$this->settings['type'] = $this->settings['ui'] ? 'switch' : 'checkbox';
+
+		Arr::change_key( $this->settings, 'ui_on_text', 'on_label' );
+		Arr::change_key( $this->settings, 'ui_off_text', 'off_label' );
+		unset( $this->message );
+	}
 }
