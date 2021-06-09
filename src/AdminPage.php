@@ -22,8 +22,13 @@ class AdminPage {
 	public function enqueue() {
 		wp_enqueue_script( 'mb-acf', plugins_url( 'js/migrate.js', __DIR__ ), [], '', true );
 		wp_localize_script( 'mb-acf', 'MbAcf', [
-			'start' => __( 'Start', 'mb-acf-migration' ),
-			'done'  => __( 'Done', 'mb-acf-migration' ),
+			'start'                  => __( 'Start', 'mb-acf-migration' ),
+			'done'                   => __( 'Done', 'mb-acf-migration' ),
+			'migratingFieldGroups'   => __( 'Migrating field groups', 'mb-acf-migration' ),
+			'migratingPosts'         => __( 'Migrating posts', 'mb-acf-migration' ),
+			'migratingTerms'         => __( 'Migrating terms', 'mb-acf-migration' ),
+			'migratingUsers'         => __( 'Migrating users', 'mb-acf-migration' ),
+			'migratingSettingsPages' => __( 'Migrating settings pages', 'mb-acf-migration' ),
 		] );
 	}
 
