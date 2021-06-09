@@ -238,4 +238,18 @@ class FieldType {
 		unset( $this->settings['allow_null'] );
 		unset( $this->settings['ui'] );
 	}
+
+	private function migrate_page_link() {
+		$this->migrate_post_object();
+
+		unset( $this->settings['allow_archives'] );
+	}
+
+	private function migrate_relationship() {
+		$this->migrate_post_object();
+
+		unset( $this->settings['elements'] );
+		unset( $this->settings['min'] );
+		unset( $this->settings['max'] );
+	}
 }
