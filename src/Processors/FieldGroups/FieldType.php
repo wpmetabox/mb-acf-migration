@@ -5,9 +5,11 @@ use MetaBox\Support\Arr;
 
 class FieldType {
 	private $settings;
+	private $post;
 
-	public function __construct( $settings ) {
+	public function __construct( $settings, $post ) {
 		$this->settings = $settings;
+		$this->post = $post;
 	}
 
 	public function __get( $name ) {
@@ -396,5 +398,14 @@ class FieldType {
 	private function migrate_tab() {
 		unset( $this->placement );
 		unset( $this->endpoint );
+	}
+
+	private function migrate_group() {
+		$fields = new Fields( $this->post->ID );
+
+		$this->fields = $fields->migrate_fields();
+
+		unset( $this->layout );
+		unset( $this->sub_fields );
 	}
 }
