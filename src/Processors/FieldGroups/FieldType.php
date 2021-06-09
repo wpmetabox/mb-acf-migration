@@ -408,4 +408,21 @@ class FieldType {
 		unset( $this->layout );
 		unset( $this->sub_fields );
 	}
+
+	private function migrate_repeater() {
+		$this->type       = 'group';
+		$this->clone      = true;
+		$this->sort_clone = true;
+
+		Arr::change_key( $this->settings, 'max', 'max_clone' );
+		Arr::change_key( $this->settings, 'button_label', 'add_button' );
+
+		$fields = new Fields( $this->post->ID );
+
+		$this->fields = $fields->migrate_fields();
+
+		unset( $this->collapsed );
+		unset( $this->min );
+		unset( $this->layout );
+	}
 }
