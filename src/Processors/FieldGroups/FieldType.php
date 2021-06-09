@@ -312,4 +312,58 @@ class FieldType {
 		unset( $this->zoom );
 		unset( $this->height );
 	}
+
+	private function migrate_date_picker() {
+		$this->type = 'date';
+
+		$js_options = [
+			'dateFormat'      => acf_convert_date_to_js( $this->display_format ),
+			'changeYear'      => true,
+			'yearRange'       => '-100:+100',
+			'changeMonth'     => true,
+			'showButtonPanel' => true,
+			'firstDay'        => $this->first_day,
+		];
+
+		$options = [];
+		foreach ( $js_options as $key => $value ) {
+			$id = uniqid();
+			$options[ $id ] = compact( 'id', 'key', 'value' );
+		}
+
+		$this->js_options = $options;
+		$this->save_format = 'Ymd';
+
+		unset( $this->display_format );
+		unset( $this->first_day );
+	}
+
+	private function migrate_date_time_picker() {
+		$this->type = 'datetime';
+
+		$formats = acf_split_date_time( $this->display_format );
+		$js_options = [
+			'dateFormat'      => acf_convert_date_to_js( $formats['date'] ),
+			'timeFormat'      => acf_convert_time_to_js( $formats['time'] ),
+			'changeYear'      => true,
+			'yearRange'       => '-100:+100',
+			'changeMonth'     => true,
+			'showButtonPanel' => true,
+			'firstDay'        => $this->first_day,
+			'controlType'     => 'select',
+			'oneLine'         => true,
+		];
+
+		$options = [];
+		foreach ( $js_options as $key => $value ) {
+			$id = uniqid();
+			$options[ $id ] = compact( 'id', 'key', 'value' );
+		}
+
+		$this->js_options = $options;
+		$this->save_format = 'Y-m-d H:i:s';
+
+		unset( $this->display_format );
+		unset( $this->first_day );
+	}
 }

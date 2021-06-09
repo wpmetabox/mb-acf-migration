@@ -192,9 +192,11 @@ class FieldGroups extends Base {
 
 		if ( $settings['type'] === 'google_map' ) {
 			$address_field = [
-				'id'   => $settings['id'] . '_address',
-				'type' => 'text',
-				'name' => $settings['name'] . ' ' . __( 'Address', 'mb-acf-migration' ),
+				'id'     => $settings['id'] . '_address',
+				'type'   => 'text',
+				'name'   => $settings['name'] . ' ' . __( 'Address', 'mb-acf-migration' ),
+				'_id'    => 'text_' . uniqid(),
+				'_state' => 'collapse',
 			];
 			$this->fields[] = $address_field;
 
