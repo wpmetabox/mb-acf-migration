@@ -171,6 +171,17 @@ class FieldType {
 		unset( $this->settings['save_other_choice'] );
 	}
 
+	private function migrate_button_group() {
+		$this->migrate_choices();
+
+		if ( $this->settings['layout'] === 'horizontal' ) {
+			$this->settings['inline'] = true;
+		}
+
+		unset( $this->settings['allow_null'] );
+		unset( $this->settings['layout'] );
+	}
+
 	private function migrate_choices() {
 		$values = [];
 		foreach ( $this->settings['choices'] as $key => $value ) {
