@@ -48,14 +48,15 @@ class Fields {
 		$settings['id']   = $this->field->post_excerpt;
 
 		if ( $settings['type'] === 'google_map' ) {
+			$id = 'text_' . uniqid();
 			$address_field = [
 				'id'     => $settings['id'] . '_address',
 				'type'   => 'text',
 				'name'   => $settings['name'] . ' ' . __( 'Address', 'mb-acf-migration' ),
-				'_id'    => 'text_' . uniqid(),
+				'_id'    => $id,
 				'_state' => 'collapse',
 			];
-			$this->fields[] = $address_field;
+			$this->fields[ $id ] = $address_field;
 
 			$settings['address_field'] = $address_field['id'];
 		}
@@ -66,6 +67,6 @@ class Fields {
 		$conditional_logic = new ConditionalLogic( $settings );
 		$conditional_logic->migrate();
 
-		$this->fields[] = $settings;
+		$this->fields[ $settings['_id'] ] = $settings;
 	}
 }

@@ -425,4 +425,72 @@ class FieldType {
 		unset( $this->min );
 		unset( $this->layout );
 	}
+
+	private function migrate_flexible_content() {
+		$this->type       = 'group';
+		$this->clone      = true;
+		$this->sort_clone = true;
+
+		Arr::change_key( $this->settings, 'max', 'max_clone' );
+		Arr::change_key( $this->settings, 'button_label', 'add_button' );
+
+		$sub_fields = [];
+
+		// Select field for controlling conditional logic.
+		$options = [];
+		foreach ( $this->layouts as $layout ) {
+			$options[] = "{$layout['name']}:{$layout['label']}";
+		}
+		$options = implode( "\n", $options );
+		$select = [
+			'name'    => __( 'Layout', 'mb-acf-migration' ),
+			'id'      => "{$this->id}_layout",
+			'type'    => 'select',
+			'options' => $options,
+			'_id'     => 'select_' . uniqid(),
+			'_state'  => 'collapse',
+		];
+		$sub_fields[ $select['_id'] ] = $select;
+
+		// Build sub-group with conditional logic.
+		$fields = new Fields( $this->post->ID );
+		$layout_fields = $fields->migrate_fields();
+
+		foreach ( $this->layouts as $layout ) {
+			$sub_group = [
+				'type'   => 'group',
+				'name'   => $layout['label'],
+				'id'     => $layout['name'],
+				'_id'    => $layout['key'],
+				'_state' => 'collapse',
+			];
+
+			// Setup sub-fields.
+			$sub_group['fields'] = array_filter( $layout_fields, function( $field ) use ( $layout ) {
+				return $field['parent_layout'] === $layout['key'];
+			} );
+
+			// Setup conditional logic.
+			$id = uniqid();
+			$sub_group['conditional_logic'] = [
+				'type'     => 'visible',
+				'relation' => 'or',
+				'when'     => [
+					$id => [
+						'id'       => $id,
+						'name'     => "{$this->id}_layout",
+						'operator' => '=',
+						'value'    => $layout['name'],
+					],
+				],
+			];
+
+			$sub_fields[ $sub_group['_id'] ] = $sub_group;
+		}
+
+		$this->fields = $sub_fields;
+
+		unset( $this->layouts );
+		unset( $this->min );
+	}
 }
