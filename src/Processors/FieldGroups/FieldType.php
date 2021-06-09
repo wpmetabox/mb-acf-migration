@@ -1,5 +1,5 @@
 <?php
-namespace MetaBox\ACF\Modules;
+namespace MetaBox\ACF\Processors\FieldGroups;
 
 use MetaBox\Support\Arr;
 

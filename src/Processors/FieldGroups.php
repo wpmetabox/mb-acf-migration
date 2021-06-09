@@ -3,9 +3,6 @@ namespace MetaBox\ACF\Processors;
 
 use WP_Query;
 use MBBParser\Parsers\MetaBox;
-use MetaBox\ACF\Modules\ConditionalLogic;
-use MetaBox\ACF\Modules\FieldType;
-use MetaBox\ACF\Modules\IncludeExclude;
 
 class FieldGroups extends Base {
 	private $post_id;
@@ -153,7 +150,7 @@ class FieldGroups extends Base {
 			$this->settings['taxonomies'] = $taxonomies;
 		}
 
-		$include_exclude = new IncludeExclude( $location );
+		$include_exclude = new FieldGroups\IncludeExclude( $location );
 		$this->settings['include_exclude'] = $include_exclude->migrate();
 
 		unset( $this->settings['location'] );
@@ -187,10 +184,10 @@ class FieldGroups extends Base {
 		$settings['name'] = $this->field->post_title;
 		$settings['id']   = $this->field->post_excerpt;
 
-		$field_type = new FieldType( $settings );
+		$field_type = new FieldGroups\FieldType( $settings );
 		$settings   = $field_type->migrate();
 
-		$conditional_logic = new ConditionalLogic( $settings );
+		$conditional_logic = new FieldGroups\ConditionalLogic( $settings );
 		$conditional_logic->migrate();
 
 		$this->fields[] = $settings;
