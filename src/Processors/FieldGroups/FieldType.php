@@ -370,4 +370,26 @@ class FieldType {
 	private function migrate_color_picker() {
 		$this->type = 'color';
 	}
+
+	public function migrate_message() {
+		$this->type = 'custom_html';
+
+		$std = $this->message;
+
+		if ( $this->esc_html ) {
+			$std = esc_html( $std );
+		}
+
+		if ( $this->new_lines === 'wpautop' ) {
+			$std = wpautop( $std );
+		} elseif ( $this->new_lines === 'br' ) {
+			$std = nl2br( $std );
+		}
+
+		$this->std = $std;
+
+		unset( $this->message );
+		unset( $this->new_lines );
+		unset( $this->esc_html );
+	}
 }
