@@ -264,6 +264,7 @@ class FieldType {
 
 	private function migrate_relationship() {
 		$this->migrate_post_object();
+		$this->multiple = true;
 
 		unset( $this->elements );
 		unset( $this->min );
@@ -277,6 +278,7 @@ class FieldType {
 		];
 		if ( isset( $types[ $this->field_type ] ) ) {
 			$this->field_type = $types[ $this->field_type ];
+			$this->multiple   = true;
 		}
 		Arr::change_key( $this->settings, 'add_term', 'add_new' );
 
