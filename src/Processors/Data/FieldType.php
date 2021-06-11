@@ -37,6 +37,15 @@ class FieldType {
 	}
 
 	private function migrate_gallery() {
+		$data = $this->get_data();
+		if ( empty( $data ) || ! is_array( $data ) ) {
+			return;
+		}
+
+		$this->storage->delete( $this->id );
+		foreach ( $data as $attachment_id ) {
+			$this->storage->add( $this->id, $attachment_id );
+		}
 	}
 
 	private function migrate_select() {
