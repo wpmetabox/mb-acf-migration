@@ -26,8 +26,6 @@ class FieldGroups extends Base {
 		$this->settings = [];
 		$this->fields   = [];
 
-		// $this->switch_post_type();
-
 		$this->create_post();
 		$this->migrate_settings();
 		$this->migrate_fields();
@@ -43,16 +41,8 @@ class FieldGroups extends Base {
 		$parser->parse();
 		update_post_meta( $this->post_id, 'meta_box', $parser->get_settings() );
 
+		$this->disable_post();
 		// $this->delete_post();
-	}
-
-	private function switch_post_type() {
-		$data = [
-			'ID'        => $this->item->ID,
-			'post_type' => 'meta-box',
-		];
-		wp_update_post( $data );
-		$this->post_id = $this->item->ID;
 	}
 
 	private function create_post() {
@@ -60,7 +50,7 @@ class FieldGroups extends Base {
 			'post_title'        => $this->item->post_title,
 			'post_type'         => 'meta-box',
 			'post_status'       => $this->item->post_status === 'acf-disabled' ? 'draft' : 'publish',
-			'post_name'         => 'group_60bd91c5575f8',
+			'post_name'         => "acf_{$this->item->post_name}",
 			'post_content'      => $this->item->post_content,
 			'post_date'         => $this->item->post_date,
 			'post_date_gmt'     => $this->item->post_date_gmt,
@@ -78,6 +68,14 @@ class FieldGroups extends Base {
 		}
 
 		update_post_meta( $this->item->ID, 'meta_box_id', $this->post_id );
+	}
+
+	private function disable_post() {
+		$data = [
+			'ID'          => $this->item->ID,
+			'post_status' => 'acf-disabled',
+		];
+		wp_update_post( $data );
 	}
 
 	private function delete_post() {
