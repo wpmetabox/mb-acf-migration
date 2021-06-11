@@ -4,12 +4,12 @@ namespace MetaBox\ACF\Processors\Data;
 use WP_Query;
 
 class Fields {
-	private $id;
+	private $parent;
 	private $storage;
 	private $field;
 
-	public function __construct( $id = 0, $storage ) {
-		$this->id = $id;
+	public function __construct( $parent = 0, $storage ) {
+		$this->parent  = $parent;
 		$this->storage = $storage;
 	}
 
@@ -27,7 +27,7 @@ class Fields {
 			'post_status'    => 'any',
 			'posts_per_page' => -1,
 			'no_found_rows'  => true,
-			'post_parent'    => $this->id,
+			'post_parent'    => $this->parent,
 			'order'          => 'ASC',
 			'orderby'        => 'menu_order',
 		] );

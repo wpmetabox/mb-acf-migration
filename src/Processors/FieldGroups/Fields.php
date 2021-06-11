@@ -4,12 +4,12 @@ namespace MetaBox\ACF\Processors\FieldGroups;
 use WP_Query;
 
 class Fields {
-	private $id;
+	private $parent;
 	private $fields = [];
 	private $field;
 
-	public function __construct( $id ) {
-		$this->id = $id;
+	public function __construct( $parent ) {
+		$this->parent = $parent;
 	}
 
 	public function migrate_fields() {
@@ -28,7 +28,7 @@ class Fields {
 			'post_status'    => 'any',
 			'posts_per_page' => -1,
 			'no_found_rows'  => true,
-			'post_parent'    => $this->id,
+			'post_parent'    => $this->parent,
 			'order'          => 'ASC',
 			'orderby'        => 'menu_order',
 		] );
