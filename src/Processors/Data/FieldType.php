@@ -74,6 +74,13 @@ class FieldType {
 	}
 
 	private function migrate_google_map() {
+		$data = $this->get_data();
+		if ( empty( $data ) || ! is_array( $data ) ) {
+			return;
+		}
+		$value = "{$data['lat']},{$data['lng']},{$data['zoom']}";
+		$this->storage->update( $this->id, $value );
+		$this->storage->update( $this->id . '_address', $data['address'] );
 	}
 
 	private function migrate_group() {
