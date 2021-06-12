@@ -52,8 +52,7 @@ class FieldType {
 	}
 
 	private function migrate_taxonomy() {
-		$value = $this->field_value->get_value();
-		$this->storage->update( $this->settings['id'], $value );
+		$this->migrate_general();
 	}
 
 	private function migrate_user() {
@@ -71,14 +70,19 @@ class FieldType {
 	}
 
 	private function migrate_group() {
-		$value = $this->field_value->get_value();
-		$this->storage->update( $this->settings['id'], $value );
+		$this->migrate_general();
 	}
 
 	private function migrate_repeater() {
+		$this->migrate_general();
 	}
 
 	private function migrate_flexible_content() {
+	}
+
+	private function migrate_general() {
+		$value = $this->field_value->get_value();
+		$this->storage->update( $this->settings['id'], $value );
 	}
 
 	private function migrate_multiple( $force_multiple = false ) {

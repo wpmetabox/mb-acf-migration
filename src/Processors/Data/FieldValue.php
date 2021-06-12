@@ -11,7 +11,7 @@ class FieldValue {
 
 	public function __construct( $args ) {
 		$this->key        = $args['key'];
-		$this->delete_key = $args['delete_key'] ?? "_{$args['key']}";
+		$this->delete_key = $args['delete_key'] ?? null;
 		$this->storage    = $args['storage'];
 
 		// For group, repeater, flexible content.
@@ -23,7 +23,17 @@ class FieldValue {
 		$method = "get_value_{$this->type}";
 		$method = method_exists( $this, $method ) ? $method : 'get_value_general';
 
-		return $this->$method();
+		$value = $this->$method();
+
+		// Delete redundant key.
+		$this->storage->delete( "_{$this->key}" );
+
+		// Delete extra key.
+		if ( $this->delete_key ) {
+			$this->storage->delete( $this->delete_key );
+		}
+
+		return $value;
 	}
 
 	private function get_value_general() {
@@ -40,9 +50,6 @@ class FieldValue {
 			$this->storage->update( $backup_key, $value );
 		}
 
-		// Delete extra keys.
-		$this->storage->delete( $this->delete_key );
-
 		return $value;
 	}
 
@@ -52,7 +59,7 @@ class FieldValue {
 	}
 
 	private function get_value_group() {
-		$values     = [];
+		$value      = [];
 		$sub_fields = $this->get_sub_fields();
 
 		foreach ( $sub_fields as $sub_field ) {
@@ -68,13 +75,41 @@ class FieldValue {
 				'post_id'    => $sub_field->ID,
 			] );
 
-			$values[ $sub_key ] = $field_value->get_value();
+			$value[ $sub_key ] = $field_value->get_value();
 		}
 
-		// Delete extra keys.
-		$this->storage->delete( $this->delete_key );
+		return $value;
+	}
 
-		return $values;
+	private function get_value_repeater() {
+		$value      = [];
+		$sub_fields = $this->get_sub_fields();
+		$count      = $this->get_value_general();
+
+		for ( $i = 0; $i < $count; $i++ ) {
+			$clone = [];
+			foreach ( $sub_fields as $sub_field ) {
+				$settings = unserialize( $sub_field->post_content );
+				$sub_key  = $sub_field->post_excerpt;
+				$key      = "{$this->key}_{$i}_{$sub_key}";
+
+				$field_value = new self( [
+					'key'        => $key,
+					'delete_key' => $key,
+					'storage'    => $this->storage,
+					'type'       => $settings['type'],
+					'post_id'    => $sub_field->ID,
+				] );
+
+				$clone[ $sub_key ] = $field_value->get_value();
+			}
+
+			$value[] = $clone;
+		}
+
+		ray( $value );
+
+		return $value;
 	}
 
 	private function get_sub_fields() {
