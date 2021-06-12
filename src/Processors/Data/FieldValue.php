@@ -71,6 +71,9 @@ class FieldValue {
 			$values[ $sub_key ] = $field_value->get_value();
 		}
 
+		// Delete extra keys.
+		$this->storage->delete( $this->delete_key );
+
 		return $values;
 	}
 
