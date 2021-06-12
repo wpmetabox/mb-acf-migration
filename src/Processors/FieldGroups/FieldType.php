@@ -431,9 +431,11 @@ class FieldType {
 	}
 
 	private function migrate_flexible_content() {
-		$this->type       = 'group';
-		$this->clone      = true;
-		$this->sort_clone = true;
+		$this->type        = 'group';
+		$this->clone       = true;
+		$this->sort_clone  = true;
+		$this->collapsible = true;
+		$this->group_title = "{{$this->id}_layout}";
 
 		Arr::change_key( $this->settings, 'max', 'max_clone' );
 		Arr::change_key( $this->settings, 'button_label', 'add_button' );
@@ -463,7 +465,7 @@ class FieldType {
 		foreach ( $this->layouts as $layout ) {
 			$sub_group = [
 				'type'   => 'group',
-				'name'   => $layout['label'],
+				'name'   => '',
 				'id'     => $layout['name'],
 				'_id'    => $layout['key'],
 				'_state' => 'collapse',

@@ -86,6 +86,10 @@ class FieldValue {
 		$sub_fields = $this->get_sub_fields();
 		$count      = $this->get_value_general();
 
+		if ( empty( $count ) ) {
+			return $value;
+		}
+
 		for ( $i = 0; $i < $count; $i++ ) {
 			$clone = [];
 			foreach ( $sub_fields as $sub_field ) {
@@ -107,7 +111,43 @@ class FieldValue {
 			$value[] = $clone;
 		}
 
-		ray( $value );
+		return $value;
+	}
+
+	private function get_value_flexible_content() {
+		$value      = [];
+		$sub_fields = $this->get_sub_fields();
+		$layouts    = $this->get_value_general();
+
+		if ( empty( $layouts ) ) {
+			return $value;
+		}
+
+		for ( $i = 0; $i < count( $layouts ); $i++ ) {
+			$layout = $layouts[ $i ];
+			$clone = [
+				"{$this->key}_layout" => $layout,
+				$layout               => [],
+			];
+
+			foreach ( $sub_fields as $sub_field ) {
+				$settings = unserialize( $sub_field->post_content );
+				$sub_key  = $sub_field->post_excerpt;
+				$key      = "{$this->key}_{$i}_{$sub_key}";
+
+				$field_value = new self( [
+					'key'        => $key,
+					'delete_key' => $key,
+					'storage'    => $this->storage,
+					'type'       => $settings['type'],
+					'post_id'    => $sub_field->ID,
+				] );
+
+				$clone[ $layout ][ $sub_key ] = $field_value->get_value();
+			}
+
+			$value[] = $clone;
+		}
 
 		return $value;
 	}

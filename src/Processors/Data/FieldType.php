@@ -51,22 +51,12 @@ class FieldType {
 		$this->migrate_multiple( true );
 	}
 
-	private function migrate_taxonomy() {
-		$this->migrate_general();
-	}
-
 	private function migrate_user() {
 		$this->migrate_multiple();
 	}
 
-	private function migrate_google_map() {
-		$value = $this->field_value->get_value();
-		if ( empty( $value ) || ! is_array( $value ) ) {
-			return;
-		}
-		$map = "{$value['lat']},{$value['lng']},{$value['zoom']}";
-		$this->storage->update( $this->settings['id'], $map );
-		$this->storage->update( $this->settings['id'] . '_address', $value['address'] );
+	private function migrate_taxonomy() {
+		$this->migrate_general();
 	}
 
 	private function migrate_group() {
@@ -78,6 +68,17 @@ class FieldType {
 	}
 
 	private function migrate_flexible_content() {
+		$this->migrate_general();
+	}
+
+	private function migrate_google_map() {
+		$value = $this->field_value->get_value();
+		if ( empty( $value ) || ! is_array( $value ) ) {
+			return;
+		}
+		$map = "{$value['lat']},{$value['lng']},{$value['zoom']}";
+		$this->storage->update( $this->settings['id'], $map );
+		$this->storage->update( $this->settings['id'] . '_address', $value['address'] );
 	}
 
 	private function migrate_general() {
