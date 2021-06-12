@@ -46,6 +46,11 @@ class FieldValue {
 		return $value;
 	}
 
+	private function get_value_taxonomy() {
+		$value = $this->get_value_general();
+		return is_array( $value ) ? implode( ',', $value ) : '';
+	}
+
 	private function get_value_group() {
 		$values     = [];
 		$sub_fields = $this->get_sub_fields();

@@ -61,7 +61,7 @@ class Fields {
 			$settings['address_field'] = $address_field['id'];
 		}
 
-		$field_type = new FieldType( $settings, $this->field );
+		$field_type = new FieldType( $settings, $this->field->ID );
 		$settings   = $field_type->migrate();
 
 		$conditional_logic = new ConditionalLogic( $settings );

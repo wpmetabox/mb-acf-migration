@@ -18,6 +18,9 @@ class FieldType {
 	}
 
 	public function migrate() {
+		// Delete extra keys.
+		$this->storage->delete( "_{$this->settings['id']}" );
+
 		$method = "migrate_{$this->settings['type']}";
 		if ( method_exists( $this, $method ) ) {
 			$this->$method();
@@ -46,6 +49,11 @@ class FieldType {
 
 	private function migrate_relationship() {
 		$this->migrate_multiple( true );
+	}
+
+	private function migrate_taxonomy() {
+		$value = $this->field_value->get_value();
+		$this->storage->update( $this->settings['id'], $value );
 	}
 
 	private function migrate_user() {

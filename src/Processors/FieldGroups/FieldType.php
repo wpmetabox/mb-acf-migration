@@ -5,11 +5,11 @@ use MetaBox\Support\Arr;
 
 class FieldType {
 	private $settings;
-	private $post;
+	private $post_id;
 
-	public function __construct( $settings, $post ) {
+	public function __construct( $settings, $post_id ) {
 		$this->settings = $settings;
-		$this->post = $post;
+		$this->post_id  = $post_id;
 	}
 
 	public function __get( $name ) {
@@ -272,6 +272,8 @@ class FieldType {
 	}
 
 	private function migrate_taxonomy() {
+		$this->type = 'taxonomy_advanced';
+
 		$types = [
 			'checkbox'     => 'checkbox_list',
 			'multi_select' => 'select_advanced',
@@ -403,7 +405,7 @@ class FieldType {
 	}
 
 	private function migrate_group() {
-		$fields = new Fields( $this->post->ID );
+		$fields = new Fields( $this->post_id );
 
 		$this->fields = $fields->migrate_fields();
 
@@ -419,7 +421,7 @@ class FieldType {
 		Arr::change_key( $this->settings, 'max', 'max_clone' );
 		Arr::change_key( $this->settings, 'button_label', 'add_button' );
 
-		$fields = new Fields( $this->post->ID );
+		$fields = new Fields( $this->post_id );
 
 		$this->fields = $fields->migrate_fields();
 
@@ -455,7 +457,7 @@ class FieldType {
 		$sub_fields[ $select['_id'] ] = $select;
 
 		// Build sub-group with conditional logic.
-		$fields = new Fields( $this->post->ID );
+		$fields = new Fields( $this->post_id );
 		$layout_fields = $fields->migrate_fields();
 
 		foreach ( $this->layouts as $layout ) {
