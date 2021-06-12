@@ -46,9 +46,14 @@ class Fields {
 			return;
 		}
 
-		$settings['id'] = $this->field->post_excerpt;
+		$settings['id']   = $this->field->post_excerpt;
 
-		$field_type = new FieldType( $settings, $this->field, $this->storage );
+		$args = [
+			'settings' => $settings,
+			'post_id'  => $this->field->ID,
+			'storage'  => $this->storage,
+		];
+		$field_type = new FieldType( $args );
 		$field_type->migrate();
 	}
 }

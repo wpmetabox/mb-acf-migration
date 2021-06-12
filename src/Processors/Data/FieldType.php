@@ -1,48 +1,27 @@
 <?php
 namespace MetaBox\ACF\Processors\Data;
 
-use MetaBox\Support\Arr;
-
 class FieldType {
 	private $settings;
-	private $post;
 	private $storage;
+	private $field_value;
 
-	public function __construct( $settings, $post, $storage ) {
-		$this->settings = $settings;
-		$this->post     = $post;
-		$this->storage  = $storage;
-	}
-
-	public function __get( $name ) {
-		return $this->settings[ $name ] ?? null;
+	public function __construct( $args ) {
+		$this->settings    = $args['settings'];
+		$this->storage     = $args['storage'];
+		$this->field_value = new FieldValue( [
+			'key'     => $args['settings']['id'],
+			'storage' => $args['storage'],
+			'type'    => $args['settings']['type'],
+			'post_id' => $args['post_id'],
+		] );
 	}
 
 	public function migrate() {
-		$this->storage->delete( "_{$this->id}" );
-
-		$method = "migrate_{$this->type}";
+		$method = "migrate_{$this->settings['type']}";
 		if ( method_exists( $this, $method ) ) {
 			$this->$method();
 		}
-
-		return $this->settings;
-	}
-
-	private function get_data() {
-		$backup_key = "_acf_bak_{$this->id}";
-		$data = $this->storage->get( $backup_key );
-		if ( '' !== $data ) {
-			return $data;
-		}
-
-		// Back the value.
-		$data = $this->storage->get( $this->id );
-		if ( '' !== $data ) {
-			$this->storage->update( $backup_key, $data );
-		}
-
-		return $data;
 	}
 
 	private function migrate_gallery() {
@@ -74,16 +53,18 @@ class FieldType {
 	}
 
 	private function migrate_google_map() {
-		$data = $this->get_data();
-		if ( empty( $data ) || ! is_array( $data ) ) {
+		$value = $this->field_value->get_value();
+		if ( empty( $value ) || ! is_array( $value ) ) {
 			return;
 		}
-		$value = "{$data['lat']},{$data['lng']},{$data['zoom']}";
-		$this->storage->update( $this->id, $value );
-		$this->storage->update( $this->id . '_address', $data['address'] );
+		$map = "{$value['lat']},{$value['lng']},{$value['zoom']}";
+		$this->storage->update( $this->settings['id'], $map );
+		$this->storage->update( $this->settings['id'] . '_address', $value['address'] );
 	}
 
 	private function migrate_group() {
+		$value = $this->field_value->get_value();
+		$this->storage->update( $this->settings['id'], $value );
 	}
 
 	private function migrate_repeater() {
@@ -93,16 +74,17 @@ class FieldType {
 	}
 
 	private function migrate_multiple( $force_multiple = false ) {
-		if ( ! $force_multiple && ! $this->multiple ) {
+		if ( ! $force_multiple && empty( $this->settings['multiple'] ) ) {
 			return;
 		}
-		$data = $this->get_data();
-		if ( empty( $data ) || ! is_array( $data ) ) {
+
+		$value = $this->field_value->get_value();
+		if ( empty( $value ) || ! is_array( $value ) ) {
 			return;
 		}
-		$this->storage->delete( $this->id );
-		foreach ( $data as $value ) {
-			$this->storage->add( $this->id, $value );
+		$this->storage->delete( $this->settings['id'] );
+		foreach ( $value as $sub_value ) {
+			$this->storage->add( $this->settings['id'], $sub_value );
 		}
 	}
 }
