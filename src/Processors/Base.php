@@ -1,10 +1,13 @@
 <?php
 namespace MetaBox\ACF\Processors;
 
+use WP_Query;
+
 abstract class Base {
 	protected $threshold = 10;
 	protected $item;
 	protected $object_type;
+	protected $field_group_ids = null;
 
 	public function migrate() {
 		$items = $this->get_items();
@@ -46,5 +49,28 @@ abstract class Base {
 
 	public function delete( $key ) {
 		delete_metadata( $this->object_type, $this->item, $key );
+	}
+
+	protected function get_field_group_ids() {
+		if ( null !== $this->field_group_ids ) {
+			return $this->field_group_ids;
+		}
+
+		$query = new WP_Query( [
+			'post_type'      => 'meta-box',
+			'post_status'    => 'any',
+			'posts_per_page' => -1,
+			'no_found_rows'  => true,
+			'fields'         => 'ids',
+		] );
+
+		$ids = array_filter( $query->posts, function( $id ) {
+			$settings = get_post_meta( $id, 'settings', true );
+			return $settings['object_type'] === $this->object_type;
+		} );
+
+		$this->field_group_ids = $ids;
+
+		return $ids;
 	}
 }
