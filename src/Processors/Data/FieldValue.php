@@ -25,9 +25,6 @@ class FieldValue {
 
 		$value = $this->$method();
 
-		// Delete redundant key.
-		$this->storage->delete( "_{$this->key}" );
-
 		// Delete extra key.
 		if ( $this->delete_key ) {
 			$this->storage->delete( $this->delete_key );

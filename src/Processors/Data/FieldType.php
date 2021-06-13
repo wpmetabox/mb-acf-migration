@@ -18,7 +18,7 @@ class FieldType {
 	}
 
 	public function migrate() {
-		// Delete extra keys.
+		// Always delete redundant key.
 		$this->storage->delete( "_{$this->settings['id']}" );
 
 		$method = "migrate_{$this->settings['type']}";
