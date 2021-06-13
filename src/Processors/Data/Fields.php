@@ -31,7 +31,7 @@ class Fields {
 			'orderby'        => 'menu_order',
 		] );
 		if ( $this->parent ) {
-			$query_args['post_parent'] = $this->parent;
+			$query_args['post_parent__in'] = (array) $this->parent;
 		}
 		$query = new WP_Query( $query_args );
 
