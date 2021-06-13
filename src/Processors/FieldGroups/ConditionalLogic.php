@@ -64,11 +64,14 @@ class ConditionalLogic {
 					$value = '';
 					break;
 				case '==empty':
-					$operator = '==';
+					$operator = '=';
 					$value = '';
 					break;
 				case '==contains':
 					$operator = 'contains';
+					break;
+				case '==':
+					$operator = '=';
 					break;
 			}
 
