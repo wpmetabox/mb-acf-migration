@@ -2,6 +2,8 @@
 namespace MetaBox\ACF\Processors;
 
 class Users extends Base {
+	protected $object_type = 'user';
+
 	protected function get_items() {
 		$users = get_users( [
 			'number'      => $this->threshold,
@@ -20,21 +22,5 @@ class Users extends Base {
 	private function migrate_fields() {
 		$fields = new Data\Fields( 0, $this );
 		$fields->migrate_fields();
-	}
-
-	public function get( $key ) {
-		return get_user_meta( $this->item, $key, true );
-	}
-
-	public function add( $key, $value ) {
-		add_user_meta( $this->item, $key, $value, false );
-	}
-
-	public function update( $key, $value ) {
-		update_user_meta( $this->item, $key, $value );
-	}
-
-	public function delete( $key ) {
-		delete_user_meta( $this->item, $key );
 	}
 }
