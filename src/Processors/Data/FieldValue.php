@@ -84,7 +84,7 @@ class FieldValue {
 	private function get_value_repeater() {
 		$value      = [];
 		$sub_fields = $this->get_sub_fields();
-		$count      = $this->get_value_general();
+		$count      = (int) $this->get_value_general();
 
 		if ( empty( $count ) ) {
 			return $value;
