@@ -24,6 +24,10 @@
 		await migrate( 'users' );
 
 		await resetCounter();
+		printMessage( i18n.migratingComments );
+		await migrate( 'comments' );
+
+		await resetCounter();
 		printMessage( i18n.migratingSettingsPages );
 		await migrate( 'settings_pages' );
 

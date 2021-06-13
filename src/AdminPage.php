@@ -29,6 +29,7 @@ class AdminPage {
 			'migratingPosts'         => __( 'Migrating posts', 'mb-acf-migration' ),
 			'migratingTerms'         => __( 'Migrating terms', 'mb-acf-migration' ),
 			'migratingUsers'         => __( 'Migrating users', 'mb-acf-migration' ),
+			'migratingComments'      => __( 'Migrating comments', 'mb-acf-migration' ),
 			'migratingSettingsPages' => __( 'Migrating settings pages', 'mb-acf-migration' ),
 		] );
 	}
