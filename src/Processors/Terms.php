@@ -10,6 +10,7 @@ class Terms extends Base {
 			'hide_empty' => false,
 			'number'     => $this->threshold,
 			'offset'     => $_SESSION['processed'],
+			'fields'     => 'ids',
 		] );
 
 		return $terms;
@@ -25,18 +26,18 @@ class Terms extends Base {
 	}
 
 	public function get( $key ) {
-		return get_term_meta( $this->item->ID, $key, true );
+		return get_term_meta( $this->item, $key, true );
 	}
 
 	public function add( $key, $value ) {
-		add_term_meta( $this->item->ID, $key, $value, false );
+		add_term_meta( $this->item, $key, $value, false );
 	}
 
 	public function update( $key, $value ) {
-		update_term_meta( $this->item->ID, $key, $value );
+		update_term_meta( $this->item, $key, $value );
 	}
 
 	public function delete( $key ) {
-		delete_term_meta( $this->item->ID, $key );
+		delete_term_meta( $this->item, $key );
 	}
 }

@@ -12,6 +12,7 @@ class Posts extends Base {
 			'posts_per_page' => $this->threshold,
 			'no_found_rows'  => true,
 			'offset'         => $_SESSION['processed'],
+			'fields'         => 'ids',
 		] );
 
 		return $query->posts;
@@ -27,18 +28,18 @@ class Posts extends Base {
 	}
 
 	public function get( $key ) {
-		return get_post_meta( $this->item->ID, $key, true );
+		return get_post_meta( $this->item, $key, true );
 	}
 
 	public function add( $key, $value ) {
-		add_post_meta( $this->item->ID, $key, $value, false );
+		add_post_meta( $this->item, $key, $value, false );
 	}
 
 	public function update( $key, $value ) {
-		update_post_meta( $this->item->ID, $key, $value );
+		update_post_meta( $this->item, $key, $value );
 	}
 
 	public function delete( $key ) {
-		delete_post_meta( $this->item->ID, $key );
+		delete_post_meta( $this->item, $key );
 	}
 }

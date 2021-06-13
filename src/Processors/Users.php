@@ -7,6 +7,7 @@ class Users extends Base {
 			'number'      => $this->threshold,
 			'offset'      => $_SESSION['processed'],
 			'count_total' => false,
+			'fields'      => 'ID',
 		] );
 
 		return $users;
@@ -22,18 +23,18 @@ class Users extends Base {
 	}
 
 	public function get( $key ) {
-		return get_user_meta( $this->item->ID, $key, true );
+		return get_user_meta( $this->item, $key, true );
 	}
 
 	public function add( $key, $value ) {
-		add_user_meta( $this->item->ID, $key, $value, false );
+		add_user_meta( $this->item, $key, $value, false );
 	}
 
 	public function update( $key, $value ) {
-		update_user_meta( $this->item->ID, $key, $value );
+		update_user_meta( $this->item, $key, $value );
 	}
 
 	public function delete( $key ) {
-		delete_user_meta( $this->item->ID, $key );
+		delete_user_meta( $this->item, $key );
 	}
 }
