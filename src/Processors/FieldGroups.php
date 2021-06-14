@@ -103,10 +103,11 @@ class FieldGroups extends Base {
 	}
 
 	private function migrate_location() {
-		$location    = $this->settings['location'];
-		$object_type = null;
-		$post_types  = [];
-		$taxonomies  = [];
+		$location       = $this->settings['location'];
+		$object_type    = null;
+		$post_types     = [];
+		$taxonomies     = [];
+		$settings_pages = [];
 
 		$object_types = [
 			'post_type'    => 'post',
@@ -121,16 +122,20 @@ class FieldGroups extends Base {
 			foreach ( $group as $rule ) {
 				$object_type = $object_types[ $rule['param'] ] ?? $rule['param'];
 
-				if ( $rule['param'] === 'post_type' && $rule['operator'] === '==' ) {
+				if ( $object_type === 'post' && $rule['operator'] === '==' ) {
 					$post_types[] = $rule['value'];
 				}
 
-				if ( $rule['param'] === 'attachment' ) {
+				if ( $object_type === 'post' ) {
 					$post_types[] = 'attachment';
 				}
 
-				if ( $rule['param'] === 'taxonomy' ) {
+				if ( $object_type === 'term' ) {
 					$taxonomies[] = $rule['value'];
+				}
+
+				if ( $object_type === 'setting' ) {
+					$settings_pages[] = $rule['value'];
 				}
 			}
 		}
@@ -144,6 +149,8 @@ class FieldGroups extends Base {
 			$this->settings['post_types'] = $post_types;
 		} elseif ( $object_type === 'term' ) {
 			$this->settings['taxonomies'] = $taxonomies;
+		} elseif ( $object_type === 'setting' ) {
+			$this->settings['settings_pages'] = $settings_pages;
 		}
 
 		$include_exclude = new FieldGroups\IncludeExclude( $location );
