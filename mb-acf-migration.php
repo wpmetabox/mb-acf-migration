@@ -1,7 +1,7 @@
 <?php
 /**
  * Plugin Name: MB ACF Migration
- * Plugin URI:  https://metabox.io
+ * Plugin URI:  https://metabox.io/plugins/mb-acf-migration/
  * Description: Migrate ACF custom fields to Meta Box.
  * Version:     0.1.0
  * Author:      MetaBox.io
