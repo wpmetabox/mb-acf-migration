@@ -151,13 +151,15 @@ class FieldValue {
 
 	private function get_sub_fields() {
 		$query_args = array_filter( [
-			'post_type'      => 'acf-field',
-			'post_status'    => 'any',
-			'posts_per_page' => -1,
-			'no_found_rows'  => true,
-			'order'          => 'ASC',
-			'orderby'        => 'menu_order',
-			'post_parent'    => $this->post_id,
+			'post_type'              => 'acf-field',
+			'post_status'            => 'any',
+			'posts_per_page'         => -1,
+			'order'                  => 'ASC',
+			'orderby'                => 'menu_order',
+			'post_parent'            => $this->post_id,
+			'no_found_rows'          => true,
+			'update_post_meta_cache' => false,
+			'update_post_term_cache' => false,
 		] );
 		$query = new WP_Query( $query_args );
 

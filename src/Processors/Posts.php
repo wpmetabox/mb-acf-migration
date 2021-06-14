@@ -9,12 +9,13 @@ class Posts extends Base {
 
 	protected function get_items() {
 		$query = new WP_Query( [
-			'post_type'      => array_keys( Helper::get_post_types() ),
-			'post_status'    => 'any',
-			'posts_per_page' => $this->threshold,
-			'no_found_rows'  => true,
-			'offset'         => $_SESSION['processed'],
-			'fields'         => 'ids',
+			'post_type'              => array_keys( Helper::get_post_types() ),
+			'post_status'            => 'any',
+			'posts_per_page'         => $this->threshold,
+			'offset'                 => $_SESSION['processed'],
+			'fields'                 => 'ids',
+			'no_found_rows'          => true,
+			'update_post_term_cache' => false,
 		] );
 
 		return $query->posts;

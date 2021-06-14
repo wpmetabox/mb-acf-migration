@@ -24,13 +24,15 @@ class Fields {
 
 	private function get_fields() {
 		$query = new WP_Query( [
-			'post_type'      => 'acf-field',
-			'post_status'    => 'any',
-			'posts_per_page' => -1,
-			'no_found_rows'  => true,
-			'post_parent'    => $this->parent,
-			'order'          => 'ASC',
-			'orderby'        => 'menu_order',
+			'post_type'              => 'acf-field',
+			'post_status'            => 'any',
+			'posts_per_page'         => -1,
+			'post_parent'            => $this->parent,
+			'order'                  => 'ASC',
+			'orderby'                => 'menu_order',
+			'no_found_rows'          => true,
+			'update_post_meta_cache' => false,
+			'update_post_term_cache' => false,
 		] );
 
 		return $query->posts;
