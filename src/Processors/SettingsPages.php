@@ -8,6 +8,11 @@ class SettingsPages extends Base {
 	protected $object_type = 'setting';
 
 	protected function get_items() {
+		$field_group_ids = $this->get_field_group_ids();
+		if ( empty( $field_group_ids ) ) {
+			return [];
+		}
+
 		// Process all settings pages at once.
 		if ( $_SESSION['processed'] ) {
 			return [];
@@ -20,9 +25,6 @@ class SettingsPages extends Base {
 
 	protected function migrate_item() {
 		$this->create_settings_page();
-
-		return;
-
 		$this->migrate_fields();
 	}
 
@@ -56,7 +58,6 @@ class SettingsPages extends Base {
 		} else {
 			$this->post_id = wp_insert_post( $data );
 		}
-		update_post_meta( $this->item->ID, 'settings_page_id', $this->post_id );
 
 		$parser = new \MBB\SettingsPage\Parser( $settings );
 		$parser->parse_boolean_values()->parse_numeric_values();
@@ -72,17 +73,17 @@ class SettingsPages extends Base {
 	}
 
 	public function get( $key ) {
-		$option_name = "{$this->item}_{$key}";
+		$option_name = "{$this->item['post_id']}_{$key}";
 		return get_option( $option_name, '' );
 	}
 
 	public function add( $key, $value ) {
-		$option = (array) get_option( $this->item, [] );
+		$option = (array) get_option( $this->item['post_id'], [] );
 		if ( ! isset( $option[ $key ] ) ) {
 			$option[ $key ] = [];
 		}
 		$option[ $key ][] = $value;
-		update_option( $this->item, $option );
+		update_option( $this->item['post_id'], $option );
 	}
 
 	public function update( $key, $value ) {
@@ -93,22 +94,22 @@ class SettingsPages extends Base {
 		}
 
 		// For normal option value.
-		$option = (array) get_option( $this->item, [] );
+		$option = (array) get_option( $this->item['post_id'], [] );
 		$option[ $key ] = $value;
-		update_option( $this->item, $option );
+		update_option( $this->item['post_id'], $option );
 	}
 
 	public function delete( $key ) {
 		// Delete option first.
-		$option_name = "{$this->item}_{$key}";
+		$option_name = "{$this->item['post_id']}_{$key}";
 		delete_option( $option_name );
 
-		$option_name = "_{$this->item}{$key}";
+		$option_name = "_{$this->item['post_id']}{$key}";
 		delete_option( $option_name );
 
 		// Delete value in the option.
-		$option = (array) get_option( $this->item, [] );
+		$option = (array) get_option( $this->item['post_id'], [] );
 		unset( $option[ $key ] );
-		update_option( $this->item, $option );
+		update_option( $this->item['post_id'], $option );
 	}
 }
