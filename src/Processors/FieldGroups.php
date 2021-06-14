@@ -10,12 +10,18 @@ class FieldGroups extends Base {
 	private $fields   = [];
 
 	protected function get_items() {
+		// Process all field groups at once.
+		if ( $_SESSION['processed'] ) {
+			return [];
+		}
+
 		$query = new WP_Query( [
-			'post_type'      => 'acf-field-group',
-			'post_status'    => 'any',
-			'posts_per_page' => $this->threshold,
-			'no_found_rows'  => true,
-			'offset'         => $_SESSION['processed'],
+			'post_type'              => 'acf-field-group',
+			'post_status'            => 'any',
+			'posts_per_page'         => -1,
+			'no_found_rows'          => true,
+			'update_post_meta_cache' => false,
+			'update_post_term_cache' => false,
 		] );
 
 		return $query->posts;
@@ -29,6 +35,7 @@ class FieldGroups extends Base {
 		$this->create_post();
 		$this->migrate_settings();
 		$this->migrate_fields();
+		$this->save_id();
 
 		$data = [
 			'post_name'  => $this->item->post_name,
@@ -102,36 +109,29 @@ class FieldGroups extends Base {
 		$post_types  = [];
 		$taxonomies  = [];
 
+		$object_types = [
+			'post_type'    => 'post',
+			'attachment'   => 'post',
+			'taxonomy'     => 'term',
+			'user_form'    => 'user',
+			'user_role'    => 'user',
+			'options_page' => 'setting',
+		];
+
 		foreach ( $location as $group ) {
 			foreach ( $group as $rule ) {
-				if ( $rule['param'] === 'post_type' ) {
-					$object_type = 'post';
+				$object_type = $object_types[ $rule['param'] ] ?? $rule['param'];
 
-					if ( $rule['operator'] === '==' ) {
-						$post_types[] = $rule['value'];
-					}
+				if ( $rule['param'] === 'post_type' && $rule['operator'] === '==' ) {
+					$post_types[] = $rule['value'];
 				}
 
 				if ( $rule['param'] === 'attachment' ) {
-					$object_type = 'post';
 					$post_types[] = 'attachment';
 				}
 
 				if ( $rule['param'] === 'taxonomy' ) {
-					$object_type = 'term';
 					$taxonomies[] = $rule['value'];
-				}
-
-				if ( $rule['param'] === 'user_form' || $rule['param'] === 'user_role' ) {
-					$object_type = 'user';
-				}
-
-				if ( $rule['param'] === 'comment' ) {
-					$object_type = 'comment';
-				}
-
-				if ( $rule['param'] === 'block' ) {
-					$object_type = 'block';
 				}
 			}
 		}
@@ -158,5 +158,17 @@ class FieldGroups extends Base {
 		$this->fields = $fields->migrate_fields();
 
 		update_post_meta( $this->post_id, 'fields', $this->fields );
+	}
+
+	private function save_id() {
+		$object_type = $this->settings['object_type'];
+
+		if ( empty( $_SESSION['field_groups'] ) ) {
+			$_SESSION['field_groups'] = [];
+		}
+		if ( empty( $_SESSION['field_groups'][ $object_type ] ) ) {
+			$_SESSION['field_groups'][ $object_type ] = [];
+		}
+		$_SESSION['field_groups'][ $object_type ][] = $this->item->ID;
 	}
 }
