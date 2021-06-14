@@ -18,6 +18,11 @@ class SettingsPages extends Base {
 			return [];
 		}
 
+		// Free version doesn't have Options pages.
+		if ( ! function_exists( 'acf_options_page' ) ) {
+			return [];
+		}
+
 		$settings_pages = acf_options_page()->get_pages();
 
 		return $settings_pages;
