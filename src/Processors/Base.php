@@ -1,7 +1,7 @@
 <?php
 namespace MetaBox\ACF\Processors;
 
-use WP_Query;
+use MetaBox\Support\Arr;
 
 abstract class Base {
 	protected $threshold = 10;
@@ -56,21 +56,8 @@ abstract class Base {
 			return $this->field_group_ids;
 		}
 
-		$query = new WP_Query( [
-			'post_type'      => 'meta-box',
-			'post_status'    => 'any',
-			'posts_per_page' => -1,
-			'no_found_rows'  => true,
-			'fields'         => 'ids',
-		] );
+		$this->field_group_ids = Arr::get( $_SESSION, "field_groups.{$this->object_type}" );
 
-		$ids = array_filter( $query->posts, function( $id ) {
-			$settings = get_post_meta( $id, 'settings', true );
-			return $settings['object_type'] === $this->object_type;
-		} );
-
-		$this->field_group_ids = $ids;
-
-		return $ids;
+		return $this->field_group_ids;
 	}
 }
