@@ -22,9 +22,8 @@ class FieldType {
 		$this->storage->delete( "_{$this->settings['id']}" );
 
 		$method = "migrate_{$this->settings['type']}";
-		if ( method_exists( $this, $method ) ) {
-			$this->$method();
-		}
+		$method = method_exists( $this, $method ) ? $method : 'migrate_general';
+		$this->$method();
 	}
 
 	private function migrate_gallery() {
@@ -53,22 +52,6 @@ class FieldType {
 
 	private function migrate_user() {
 		$this->migrate_multiple();
-	}
-
-	private function migrate_taxonomy() {
-		$this->migrate_general();
-	}
-
-	private function migrate_group() {
-		$this->migrate_general();
-	}
-
-	private function migrate_repeater() {
-		$this->migrate_general();
-	}
-
-	private function migrate_flexible_content() {
-		$this->migrate_general();
 	}
 
 	private function migrate_google_map() {
