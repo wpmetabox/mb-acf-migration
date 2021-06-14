@@ -56,7 +56,7 @@ abstract class Base {
 			return $this->field_group_ids;
 		}
 
-		$this->field_group_ids = Arr::get( $_SESSION, "field_groups.{$this->object_type}" );
+		$this->field_group_ids = array_unique( Arr::get( $_SESSION, "field_groups.{$this->object_type}", [] ) );
 
 		return $this->field_group_ids;
 	}

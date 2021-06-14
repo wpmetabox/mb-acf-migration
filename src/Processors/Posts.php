@@ -8,6 +8,11 @@ class Posts extends Base {
 	protected $object_type = 'post';
 
 	protected function get_items() {
+		$field_group_ids = $this->get_field_group_ids();
+		if ( empty( $field_group_ids ) ) {
+			return [];
+		}
+
 		$query = new WP_Query( [
 			'post_type'              => array_keys( Helper::get_post_types() ),
 			'post_status'            => 'any',

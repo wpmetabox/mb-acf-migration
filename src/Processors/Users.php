@@ -5,6 +5,11 @@ class Users extends Base {
 	protected $object_type = 'user';
 
 	protected function get_items() {
+		$field_group_ids = $this->get_field_group_ids();
+		if ( empty( $field_group_ids ) ) {
+			return [];
+		}
+
 		$users = get_users( [
 			'number'      => $this->threshold,
 			'offset'      => $_SESSION['processed'],
