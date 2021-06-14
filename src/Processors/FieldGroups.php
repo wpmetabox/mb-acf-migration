@@ -64,7 +64,6 @@ class FieldGroups extends Base {
 			'post_modified'     => $this->item->post_modified,
 			'post_modified_gmt' => $this->item->post_modified_gmt,
 		];
-		wp_update_post( $data );
 
 		$post_id = get_post_meta( $this->item->ID, 'meta_box_id', true );
 		if ( $post_id ) {
