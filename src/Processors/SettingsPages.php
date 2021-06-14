@@ -1,7 +1,10 @@
 <?php
 namespace MetaBox\ACF\Processors;
 
+use MetaBox\Support\Arr;
+
 class SettingsPages extends Base {
+	private $post_id;
 	protected $object_type = 'setting';
 
 	protected function get_items() {
@@ -9,15 +12,58 @@ class SettingsPages extends Base {
 		if ( $_SESSION['processed'] ) {
 			return [];
 		}
-		$settings_pages = acf_options_page()->get_pages();
 
-		$settings_pages = array_values( wp_list_pluck( $settings_pages, 'post_id' ) );
+		$settings_pages = acf_options_page()->get_pages();
 
 		return $settings_pages;
 	}
 
 	protected function migrate_item() {
+		$this->create_settings_page();
+
+		return;
+
 		$this->migrate_fields();
+	}
+
+	private function create_settings_page() {
+		if ( ! class_exists( 'MBB\SettingsPage\Parser' ) ) {
+			return;
+		}
+
+		$settings = $this->item;
+		Arr::change_key( $settings, 'post_id', 'option_name' );
+		Arr::change_key( $settings, 'menu_slug', 'id' );
+		Arr::change_key( $settings, 'parent_slug', 'parent' );
+		Arr::change_key( $settings, 'update_button', 'submit_button' );
+		Arr::change_key( $settings, 'updated_message', 'message' );
+
+		$data = [
+			'post_title'  => $settings['menu_title'],
+			'post_type'   => 'mb-settings-page',
+			'post_status' => 'publish',
+			'post_name'   => $settings['id'],
+		];
+
+		global $wpdb;
+		$post_id = $wpdb->get_var( $wpdb->prepare( "
+			SELECT ID FROM $wpdb->posts
+			WHERE post_name = %s
+		", $settings['id'] ) );
+		if ( $post_id ) {
+			$this->post_id = $data['ID'] = $post_id;
+			wp_update_post( $data );
+		} else {
+			$this->post_id = wp_insert_post( $data );
+		}
+		update_post_meta( $this->item->ID, 'settings_page_id', $this->post_id );
+
+		$parser = new \MBB\SettingsPage\Parser( $settings );
+		$parser->parse_boolean_values()->parse_numeric_values();
+		update_post_meta( $this->post_id, 'settings', $parser->get_settings() );
+
+		$parser->parse();
+		update_post_meta( $this->post_id, 'settings_page', $parser->get_settings() );
 	}
 
 	private function migrate_fields() {
