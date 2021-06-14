@@ -150,7 +150,7 @@ class FieldValue {
 	}
 
 	private function get_sub_fields() {
-		$query_args = array_filter( [
+		$query = new WP_Query( [
 			'post_type'              => 'acf-field',
 			'post_status'            => 'any',
 			'posts_per_page'         => -1,
@@ -161,7 +161,6 @@ class FieldValue {
 			'update_post_meta_cache' => false,
 			'update_post_term_cache' => false,
 		] );
-		$query = new WP_Query( $query_args );
 
 		return $query->posts;
 	}

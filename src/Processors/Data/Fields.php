@@ -22,20 +22,17 @@ class Fields {
 	}
 
 	private function get_fields() {
-		$query_args = array_filter( [
+		$query = new WP_Query( [
 			'post_type'              => 'acf-field',
 			'post_status'            => 'any',
 			'posts_per_page'         => -1,
+			'post_parent__in'        => (array) $this->parent,
 			'order'                  => 'ASC',
 			'orderby'                => 'menu_order',
 			'no_found_rows'          => true,
 			'update_post_meta_cache' => false,
 			'update_post_term_cache' => false,
 		] );
-		if ( $this->parent ) {
-			$query_args['post_parent__in'] = (array) $this->parent;
-		}
-		$query = new WP_Query( $query_args );
 
 		return $query->posts;
 	}
