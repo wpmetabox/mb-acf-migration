@@ -28,7 +28,17 @@ class Ajax {
 	}
 
 	private function get_processor() {
-		$type = $_GET['type'];
+		$type = filter_input( INPUT_GET, 'type', FILTER_SANITIZE_STRING );
+		if ( ! in_array( $type, [
+			'field_groups',
+			'posts',
+			'terms',
+			'users',
+			'comments',
+			'settings_pages',
+		], true ) ) {
+			return;
+		}
 		$type = str_replace( ' ', '', ucwords( str_replace( '_', ' ', $type ) ) );
 		$class = "MetaBox\ACF\Processors\\$type";
 		return new $class;

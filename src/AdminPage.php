@@ -37,7 +37,7 @@ class AdminPage {
 	public function render() {
 		?>
 		<div class="wrap">
-			<h1><?= get_admin_page_title() ?></h1>
+			<h1><?php echo esc_html( get_admin_page_title() ) ?></h1>
 			<p>
 				<button class="button button-primary" id="process"><?php esc_html_e( 'Migrate', 'mb-acf-migration' ) ?></button>
 			</p>
