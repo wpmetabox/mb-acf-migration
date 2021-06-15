@@ -11,15 +11,25 @@
  * Domain Path: /languages/
  */
 
-namespace MetaBox\ACF;
-
 defined( 'ABSPATH' ) || die;
 
-require __DIR__ . '/vendor/autoload.php';
+if ( ! function_exists( 'mb_acf_load' ) ) {
+	if ( file_exists( __DIR__ . '/vendor' ) ) {
+		require __DIR__ . '/vendor/autoload.php';
+	}
 
-define( 'MBACF_DIR', __DIR__ );
+	add_action( 'init', 'mb_acf_load', 0 );
 
-if ( is_admin() ) {
-    new AdminPage;
-    new Ajax;
+	function mb_acf_load() {
+		if ( ! defined( 'RWMB_VER' ) ) {
+			return;
+		}
+
+		define( 'MBACF_DIR', __DIR__ );
+
+		if ( is_admin() ) {
+			new MetaBox\ACF\AdminPage;
+			new MetaBox\ACF\Ajax;
+		}
+	}
 }
