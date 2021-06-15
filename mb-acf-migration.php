@@ -21,15 +21,13 @@ if ( ! function_exists( 'mb_acf_load' ) ) {
 	add_action( 'init', 'mb_acf_load', 0 );
 
 	function mb_acf_load() {
-		if ( ! defined( 'RWMB_VER' ) ) {
+		if ( ! defined( 'RWMB_VER' ) || ! class_exists( 'ACF' ) || ! is_admin() ) {
 			return;
 		}
 
 		define( 'MBACF_DIR', __DIR__ );
 
-		if ( is_admin() ) {
-			new MetaBox\ACF\AdminPage;
-			new MetaBox\ACF\Ajax;
-		}
+		new MetaBox\ACF\AdminPage;
+		new MetaBox\ACF\Ajax;
 	}
 }
