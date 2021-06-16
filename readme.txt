@@ -5,7 +5,7 @@ Tags: meta box, custom fields, custom post types, custom taxonomies, cpt, meta b
 Requires at least: 5.5
 Requires PHP: 7.0
 Tested up to: 5.7.2
-Stable tag: 0.1.0
+Stable tag: 1.0.0
 License: GPLv2 or later
 
 Migrate custom fields from Advanced Custom Fields to Meta Box.
@@ -41,5 +41,8 @@ See more details at the [comparison page between ACF and Meta Box](https://metab
 == Screenshots ==
 
 == Changelog ==
+
+= 1.0.0 - 2021-06-16 =
+- Initial release
 
 == Upgrade Notice ==
