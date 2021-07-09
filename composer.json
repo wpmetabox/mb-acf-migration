@@ -18,6 +18,9 @@
       "MetaBox\\ACF\\": "src/"
     }
   },
+  "config": {
+		"prepend-autoloader": false
+	},
   "repositories": [
 		{
 			"type": "git",

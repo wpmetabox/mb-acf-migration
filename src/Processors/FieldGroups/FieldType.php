@@ -44,6 +44,10 @@ class FieldType {
 		Arr::change_key( $this->settings, 'default_value', 'std' );
 		Arr::change_key( $this->settings, 'maxlength', 'limit' );
 
+		if ( isset( $this->required ) && ! $this->required ) {
+			unset( $this->required );
+		}
+
 		$this->_id    = $this->type . '_' . uniqid();
 		$this->_state = 'collapse';
 
