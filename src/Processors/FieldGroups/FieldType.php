@@ -48,8 +48,9 @@ class FieldType {
 			unset( $this->required );
 		}
 
-		$this->_id    = $this->type . '_' . uniqid();
-		$this->_state = 'collapse';
+		$this->_id        = $this->type . '_' . uniqid();
+		$this->_state     = 'collapse';
+		$this->save_field = true;
 
 		unset( $this->wrapper );
 		unset( $this->return_format );
@@ -70,7 +71,7 @@ class FieldType {
 	}
 
 	private function migrate_file() {
-		$this->type = 'file_advanced';
+		$this->type             = 'file_advanced';
 		$this->max_file_uploads = 1;
 
 		unset( $this->library );
@@ -82,7 +83,7 @@ class FieldType {
 	private function migrate_wysiwyg() {
 		$options = [];
 		if ( $this->toolbar === 'basic' ) {
-			$id = uniqid();
+			$id             = uniqid();
 			$options[ $id ] = [
 				'id'    => $id,
 				'key'   => 'teeny',
@@ -90,7 +91,7 @@ class FieldType {
 			];
 		}
 		if ( $this->tabs === 'visual' ) {
-			$id = uniqid();
+			$id             = uniqid();
 			$options[ $id ] = [
 				'id'    => $id,
 				'key'   => 'quicktags',
@@ -98,7 +99,7 @@ class FieldType {
 			];
 		}
 		if ( $this->tabs === 'text' ) {
-			$id = uniqid();
+			$id             = uniqid();
 			$options[ $id ] = [
 				'id'    => $id,
 				'key'   => 'tinymce',
@@ -106,7 +107,7 @@ class FieldType {
 			];
 		}
 
-		$id = uniqid();
+		$id             = uniqid();
 		$options[ $id ] = [
 			'id'    => $id,
 			'key'   => 'media_buttons',
@@ -229,21 +230,21 @@ class FieldType {
 			foreach ( $this->taxonomy as $k => $item ) {
 				list( $taxonomy, $slug ) = explode( ':', $item );
 
-				$id = uniqid();
+				$id                = uniqid();
 				$query_args[ $id ] = [
 					'id'    => $id,
 					'key'   => "tax_query.$k.taxonomy",
 					'value' => $taxonomy,
 				];
 
-				$id = uniqid();
+				$id                = uniqid();
 				$query_args[ $id ] = [
 					'id'    => $id,
 					'key'   => "tax_query.$k.field",
 					'value' => 'slug',
 				];
 
-				$id = uniqid();
+				$id                = uniqid();
 				$query_args[ $id ] = [
 					'id'    => $id,
 					'key'   => "tax_query.$k.terms",
@@ -314,7 +315,7 @@ class FieldType {
 			$this->std = $std;
 		}
 
-		$api = apply_filters( 'acf/fields/google_map/api', [] );
+		$api           = apply_filters( 'acf/fields/google_map/api', [] );
 		$this->api_key = $api['key'] ?? '';
 
 		unset( $this->center_lat );
@@ -337,11 +338,11 @@ class FieldType {
 
 		$options = [];
 		foreach ( $js_options as $key => $value ) {
-			$id = uniqid();
+			$id             = uniqid();
 			$options[ $id ] = compact( 'id', 'key', 'value' );
 		}
 
-		$this->js_options = $options;
+		$this->js_options  = $options;
 		$this->save_format = 'Ymd';
 
 		unset( $this->display_format );
@@ -351,7 +352,7 @@ class FieldType {
 	private function migrate_date_time_picker() {
 		$this->type = 'datetime';
 
-		$formats = acf_split_date_time( $this->display_format );
+		$formats    = acf_split_date_time( $this->display_format );
 		$js_options = [
 			'dateFormat'      => acf_convert_date_to_js( $formats['date'] ),
 			'timeFormat'      => acf_convert_time_to_js( $formats['time'] ),
@@ -366,11 +367,11 @@ class FieldType {
 
 		$options = [];
 		foreach ( $js_options as $key => $value ) {
-			$id = uniqid();
+			$id             = uniqid();
 			$options[ $id ] = compact( 'id', 'key', 'value' );
 		}
 
-		$this->js_options = $options;
+		$this->js_options  = $options;
 		$this->save_format = 'Y-m-d H:i:s';
 
 		unset( $this->display_format );
@@ -451,8 +452,8 @@ class FieldType {
 		foreach ( $this->layouts as $layout ) {
 			$options[] = "{$layout['name']}:{$layout['label']}";
 		}
-		$options = implode( "\n", $options );
-		$select = [
+		$options                      = implode( "\n", $options );
+		$select                       = [
 			'name'    => __( 'Layout', 'mb-acf-migration' ),
 			'id'      => "{$this->id}_layout",
 			'type'    => 'select',
@@ -463,7 +464,7 @@ class FieldType {
 		$sub_fields[ $select['_id'] ] = $select;
 
 		// Build sub-group with conditional logic.
-		$fields = new Fields( $this->post_id );
+		$fields        = new Fields( $this->post_id );
 		$layout_fields = $fields->migrate_fields();
 
 		foreach ( $this->layouts as $layout ) {
@@ -481,7 +482,7 @@ class FieldType {
 			} );
 
 			// Setup conditional logic.
-			$id = uniqid();
+			$id                             = uniqid();
 			$sub_group['conditional_logic'] = [
 				'type'     => 'visible',
 				'relation' => 'or',
