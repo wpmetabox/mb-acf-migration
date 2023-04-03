@@ -41,7 +41,7 @@ class Fields {
 	private function migrate_field() {
 		$settings = unserialize( $this->field->post_content );
 
-		$ignore_types = ['link', 'accordion', 'clone'];
+		$ignore_types = [ 'link', 'accordion', 'clone' ];
 		if ( in_array( $settings['type'], $ignore_types ) ) {
 			return;
 		}
@@ -50,13 +50,14 @@ class Fields {
 		$settings['id']   = $this->field->post_excerpt;
 
 		if ( $settings['type'] === 'google_map' ) {
-			$id = 'text_' . uniqid();
-			$address_field = [
-				'id'     => $settings['id'] . '_address',
-				'type'   => 'text',
-				'name'   => $settings['name'] . ' ' . __( 'Address', 'mb-acf-migration' ),
-				'_id'    => $id,
-				'_state' => 'collapse',
+			$id                  = 'text_' . uniqid();
+			$address_field       = [
+				'id'         => $settings['id'] . '_address',
+				'type'       => 'text',
+				'name'       => $settings['name'] . ' ' . __( 'Address', 'mb-acf-migration' ),
+				'_id'        => $id,
+				'_state'     => 'collapse',
+				'save_field' => true,
 			];
 			$this->fields[ $id ] = $address_field;
 
