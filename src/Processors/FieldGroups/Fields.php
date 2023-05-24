@@ -64,6 +64,10 @@ class Fields {
 			$settings['address_field'] = $address_field['id'];
 		}
 
+		if ( $settings['type'] === 'time_picker' ) {
+			$settings['type'] = 'time';
+		}
+
 		$field_type = new FieldType( $settings, $this->field->ID );
 		$settings   = $field_type->migrate();
 
