@@ -9,7 +9,15 @@
 
 		await resetCounter();
 		printMessage( i18n.migratingFieldGroups );
+		await migrate( 'post_types' );
+
+		await resetCounter();
+		printMessage( i18n.migratingFieldGroups );
 		await migrate( 'field_groups' );
+
+		await resetCounter();
+		printMessage( i18n.migratingFieldGroups );
+		await migrate( 'taxonomies' );
 
 		await resetCounter();
 		printMessage( i18n.migratingPosts );
