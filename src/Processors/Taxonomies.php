@@ -10,13 +10,14 @@ class Taxonomies extends Base {
 		}
 
 		$query = new WP_Query( [
-			'post-type'              => 'acf-taxonomy',
+			'post_type'              => 'acf-taxonomy',
 			'post_status'            => 'any',
 			'posts_per_page'         => -1,
 			'no_found_rows'          => true,
 			'update_post_meta_cache' => false,
 			'update_post_term_cache' => false,
 		] );
+
 		return $query->posts;
 	}
 
@@ -28,9 +29,10 @@ class Taxonomies extends Base {
 
 	private function migrate_taxonomies() {
 		$taxonomy = unserialize( $this->item->post_content );
-write_log( 'taxonomy '. print_r( $taxonomy , true ) );
+
 		$args   = [
 			'labels'             => $taxonomy['labels'],
+			'description'        => $taxonomy['description'],
 			'supports'           => $taxonomy['supports'],
 			'public'             => $taxonomy['public'],
 			'publicly_queryable' => $taxonomy['publicly_queryable'],
@@ -68,7 +70,10 @@ write_log( 'taxonomy '. print_r( $taxonomy , true ) );
 			],
 		];
 
-		$bbb = register_taxonomy( $taxonomy['taxonomy'], $args );
+		register_post_type( 'mb-taxonomy', $args );
+
+		$types = empty( $taxonomy['object_type'] ) ? [] : $taxonomy['object_type'];
+		register_taxonomy( $taxonomy['taxonomy'], $types, $args );
 	}
 
 	protected function disable_post() {

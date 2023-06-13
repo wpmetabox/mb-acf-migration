@@ -29,7 +29,7 @@ class PostTypes extends Base {
 
 	private function migrate_post_types() {
 		$post_type = unserialize( $this->item->post_content );
-write_log( 'post_type '. print_r( $post_type , true ) );
+
 		$args   = [
 			'labels'             => $post_type['labels'],
 			'description'        => $post_type['description'],
@@ -72,6 +72,8 @@ write_log( 'post_type '. print_r( $post_type , true ) );
 				'create_posts'           => 'manage_options',
 			],
 		];
+
+		register_post_type( 'mb-post-type', $args );
 		register_post_type( $post_type['post-type'], $args );
 
 	}
