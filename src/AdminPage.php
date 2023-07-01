@@ -25,6 +25,8 @@ class AdminPage {
 		wp_localize_script( 'mb-acf', 'MbAcf', [
 			'start'                  => __( 'Start', 'mb-acf-migration' ),
 			'done'                   => __( 'Done', 'mb-acf-migration' ),
+			'migratingPostTypes'     => __( 'Migrating post types', 'mb-acf-migration' ),
+			'migratingTaxonomies'    => __( 'Migrating taxonomies', 'mb-acf-migration' ),
 			'migratingFieldGroups'   => __( 'Migrating field groups', 'mb-acf-migration' ),
 			'migratingPosts'         => __( 'Migrating posts', 'mb-acf-migration' ),
 			'migratingTerms'         => __( 'Migrating terms', 'mb-acf-migration' ),

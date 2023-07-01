@@ -60,4 +60,17 @@ abstract class Base {
 
 		return $this->field_group_ids;
 	}
+
+	public function get_id_by_slug( $slug, $post_type ) {
+		global $wpdb;
+		if ( ! $slug ) {
+			return null;
+		}
+		$s   = '"slug":'.'"'.$slug.'"';
+		$s   = '%' . $wpdb->esc_like( $s ) . '%';
+		$sql = "SELECT ID FROM $wpdb->posts WHERE post_type=%s AND post_content LIKE %s";
+		$id  = $wpdb->get_var( $wpdb->prepare( $sql, $post_type, $s ) );
+
+		return $id;
+	}
 }
