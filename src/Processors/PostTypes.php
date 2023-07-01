@@ -34,6 +34,7 @@ class PostTypes extends Base {
 		$singular              = Arr::get( $item, 'labels.singular_name' );
 		$slug                  = Arr::get( $item, 'post_type' );
 		$item['slug']          = $slug;
+		$item['label']         = $plural;
 		$item['menu_position'] = (int) Arr::get( $item, 'menu_position' ) ?: '';
 
 		$item['archive_slug'] = Arr::get( $item, 'has_archive_slug' );

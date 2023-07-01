@@ -34,6 +34,7 @@ class Taxonomies extends Base {
 			$singular             = Arr::get( $item, 'labels.singular_name' );
 			$slug                 = Arr::get( $item, 'taxonomy' );
 			$item['slug']         = $slug;
+			$item['label']        = $plural;
 			$item['hierarchical'] = Arr::get( $item, 'hierarchical' ) ? true : false;
 			$meta_box_cb          = $item['hierarchical'] ? 'post_categories_meta_box' : 'post_tags_meta_box';
 			$item['meta_box_cb']  = Arr::get( $item, 'meta_box_cb' ) ? $meta_box_cb : false;
