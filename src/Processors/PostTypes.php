@@ -43,11 +43,18 @@ class PostTypes extends Base {
 		$item['hierarchical'] = Arr::get( $item, 'hierarchical' );
 		$item['supports']     = Arr::get( $item, 'supports', [] ) ?: [];
 		$item['taxonomies']   = Arr::get( $item, 'taxonomies', [] ) ?: [];
+		$item['query_var']    = ( Arr::get( $item, 'query_var' ) == 'none' ) ? false : true;
 		$item['rewrite']      = [
 			'slug'       => Arr::get( $item, 'rewrite.slug' ),
 			'with_front' => Arr::get( $item, 'rewrite.with_front' ) ? true : false,
 		];
-		$item['query_var']    = ( Arr::get( $item, 'query_var' ) == 'none' ) ? false : true;
+		$singular_capability  = Arr::get( $item, 'singular_capability_name' );
+		$capability_type      = [ 'post', 'page' ];
+		if ( in_array( $singular_capability, $capability_type ) ) {
+			$item['capability_type'] = $singular_capability;
+		} else {
+			$item['capability_type'] = 'custom';
+		}
 
 		$array          = [
 			'menu_name'                => Arr::get( $item, 'labels.menu_name', $plural ) ?: $plural,

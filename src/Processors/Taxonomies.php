@@ -24,7 +24,6 @@ class Taxonomies extends Base {
 
 	protected function migrate_item() {
 		$this->migrate_taxonomies();
-
 		$this->disable_post();
 	}
 
@@ -39,12 +38,12 @@ class Taxonomies extends Base {
 			$meta_box_cb          = $item['hierarchical'] ? 'post_categories_meta_box' : 'post_tags_meta_box';
 			$item['meta_box_cb']  = Arr::get( $item, 'meta_box_cb' ) ? $meta_box_cb : false;
 			$item['types']        = Arr::get( $item, 'object_type', [] ) ?: [];
+			$item['query_var']    = ( Arr::get( $item, 'query_var' ) == 'none' ) ? false : true;
 			$item['rewrite']      = [
 				'slug'         => Arr::get( $item, 'rewrite.slug' ),
 				'with_front'   => Arr::get( $item, 'rewrite.with_front' ) ? true : false,
 				'hierarchical' => Arr::get( $item, 'rewrite.rewrite_hierarchical' ) ? true : false,
 			];
-			$item['query_var']    = ( Arr::get( $item, 'query_var' ) == 'none' ) ? false : true;
 
 			$array          = [
 				'menu_name'                  => Arr::get( $item, 'labels.menu_name', $plural ) ?: $plural,
