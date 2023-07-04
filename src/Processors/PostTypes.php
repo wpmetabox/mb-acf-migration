@@ -88,11 +88,11 @@ class PostTypes extends Base {
 		];
 		$item['labels'] = array_merge( $item['labels'], $array );
 		$content        = wp_json_encode( $item, JSON_UNESCAPED_UNICODE );
-		$post_id        = $this->get_id_by_slug( $slug, 'mb-post-type' );
+		$post_obj       = get_page_by_path( $singular, OBJECT, 'mb-post-type' );
 
-		if ( $post_id ) {
+		if ( $post_obj ) {
 			wp_update_post( [
-				'ID'           => $post_id,
+				'ID'           => $post_obj->ID,
 				'post_content' => $content,
 			] );
 		} else {
@@ -101,7 +101,7 @@ class PostTypes extends Base {
 				'post_type'    => 'mb-post-type',
 				'post_title'   => $plural,
 				'post_status'  => 'publish',
-				'post_name'    => $slug,
+				'post_name'    => $singular,
 			] );
 		}
 
