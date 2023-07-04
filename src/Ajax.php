@@ -30,6 +30,8 @@ class Ajax {
 	private function get_processor() {
 		$type = filter_input( INPUT_GET, 'type', FILTER_SANITIZE_STRING );
 		if ( ! in_array( $type, [
+			'post_types',
+			'taxonomies',
 			'field_groups',
 			'posts',
 			'terms',
