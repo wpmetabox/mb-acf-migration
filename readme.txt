@@ -5,7 +5,7 @@ Tags: meta box, custom fields, custom post types, custom taxonomies, cpt, meta b
 Requires at least: 5.5
 Requires PHP: 7.0
 Tested up to: 6.2.2
-Stable tag: 1.0.3
+Stable tag: 1.1.0
 License: GPLv2 or later
 
 Migrate custom fields from Advanced Custom Fields to Meta Box.
@@ -26,6 +26,15 @@ Switching from ACF to Meta Box gives you lots of benefits:
 
 See more details at the [comparison page between ACF and Meta Box](https://metabox.io/meta-box-vs-acf/).
 
+### You might also like
+
+If you like this plugin, you might also like our other WordPress products:
+
+- [Slim SEO](https://wpslimseo.com) - A fast, lightweight and full-featured SEO plugin for WordPress with minimal configuration.
+- [Slim SEO Schema](https://wpslimseo.com/products/slim-seo-schema/) - The best plugin to add schemas (structured data) to WordPress.
+- [Slim SEO Link Manager](https://wpslimseo.com/products/slim-seo-link-manager/) - The best plugin to build and manage links in WordPress.
+- [GretaThemes](https://gretathemes.com) - Free and premium WordPress themes that clean, simple and just work.
+
 == Installation ==
 
 1. Visit **Plugins > Add New**
@@ -41,6 +50,9 @@ See more details at the [comparison page between ACF and Meta Box](https://metab
 == Screenshots ==
 
 == Changelog ==
+
+= 1.1.0 - 2023-07-05 =
+- Migrate post types and taxonomies
 
 = 1.0.3 - 2023-05-25 =
 - Fix `time_picker` field in ACF not migrated to `time` in Meta Box
