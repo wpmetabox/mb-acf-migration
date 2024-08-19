@@ -4,8 +4,8 @@ Donate link: https://metabox.io/pricing/
 Tags: meta box, custom fields, custom post types, custom taxonomies, cpt, meta boxes, custom field, post type, taxonomy, meta, admin, advanced, custom, edit, field, file, image, magic fields, post types, more fields, post, repeater, simple fields, text, textarea, type, cms, fields post
 Requires at least: 5.5
 Requires PHP: 7.0
-Tested up to: 6.2.2
-Stable tag: 1.1.0
+Tested up to: 6.6.1
+Stable tag: 1.1.1
 License: GPLv2 or later
 
 Migrate custom fields from Advanced Custom Fields to Meta Box.
@@ -50,6 +50,9 @@ If you like this plugin, you might also like our other WordPress products:
 == Screenshots ==
 
 == Changelog ==
+
+= 1.1.1 - 2024-08-19 =
+Fix running PHP Codesniffer when installing & autoload the plugin's main file via Composer
 
 = 1.1.0 - 2023-07-05 =
 - Migrate post types and taxonomies
