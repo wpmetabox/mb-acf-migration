@@ -12,7 +12,7 @@ class Users extends Base {
 
 		$users = get_users( [
 			'number'      => $this->threshold,
-			'offset'      => (int) $_SESSION['processed'],
+			'offset'      => (int) $_SESSION['processed'], // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotValidated
 			'count_total' => false,
 			'fields'      => 'ID',
 		] );

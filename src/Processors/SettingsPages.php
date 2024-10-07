@@ -14,7 +14,7 @@ class SettingsPages extends Base {
 		}
 
 		// Process all settings pages at once.
-		if ( $_SESSION['processed'] ) {
+		if ( isset( $_SESSION['processed'] ) ) {
 			return [];
 		}
 
@@ -53,10 +53,7 @@ class SettingsPages extends Base {
 		];
 
 		global $wpdb;
-		$post_id = $wpdb->get_var( $wpdb->prepare( "
-			SELECT ID FROM $wpdb->posts
-			WHERE post_name = %s
-		", $settings['id'] ) );
+		$post_id = $wpdb->get_var( $wpdb->prepare( " SELECT ID FROM $wpdb->posts WHERE post_name = %s ", $settings['id'] ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Error.
 		if ( $post_id ) {
 			$this->post_id = $data['ID'] = $post_id;
 			wp_update_post( $data );

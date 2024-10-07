@@ -17,7 +17,7 @@ class Posts extends Base {
 			'post_type'              => array_keys( Helper::get_post_types() ),
 			'post_status'            => 'any',
 			'posts_per_page'         => $this->threshold,
-			'offset'                 => (int) $_SESSION['processed'],
+			'offset'                 => (int) $_SESSION['processed'], // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotValidated
 			'fields'                 => 'ids',
 			'no_found_rows'          => true,
 			'update_post_term_cache' => false,

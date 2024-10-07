@@ -27,7 +27,8 @@ abstract class Base {
 
 		$_SESSION['processed'] += count( $items );
 		wp_send_json_success( [
-			'message' => sprintf( __( 'Processed %d items...', 'mb-acf-migration' ), $_SESSION['processed'] ) . '<br>' . implode( '<br>', $output ),
+			/* translators: %d - count items */
+			'message' => sprintf( __( 'Processed %d items...', 'mb-acf-migration' ), (int) $_SESSION['processed'] ) . '<br>' . implode( '<br>', $output ), // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotValidated
 			'type'    => 'continue',
 		] );
 	}

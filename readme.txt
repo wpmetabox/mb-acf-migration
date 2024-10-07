@@ -1,7 +1,7 @@
 === MB ACF Migration ===
 Contributors: elightup, metabox, rilwis
 Donate link: https://metabox.io/pricing/
-Tags: meta box, custom fields, custom post types, custom taxonomies, cpt, meta boxes, custom field, post type, taxonomy, meta, admin, advanced, custom, edit, field, file, image, magic fields, post types, more fields, post, repeater, simple fields, text, textarea, type, cms, fields post
+Tags: meta box, custom fields, custom post types, acf, migration
 Requires at least: 5.5
 Requires PHP: 7.0
 Tested up to: 6.6.1
