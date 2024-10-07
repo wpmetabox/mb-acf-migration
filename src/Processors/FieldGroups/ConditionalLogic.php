@@ -87,6 +87,6 @@ class ConditionalLogic {
 
 	private function get_name( $field ) {
 		global $wpdb;
-		return $wpdb->get_var( $wpdb->prepare( "SELECT post_excerpt FROM $wpdb->posts WHERE post_name=%s", $field ) );
+		return $wpdb->get_var( $wpdb->prepare( "SELECT post_excerpt FROM $wpdb->posts WHERE post_name=%s", $field ) ); // phpcs:ignore WordPress.DB.DirectDatabaseQuery.DirectQuery, WordPress.DB.DirectDatabaseQuery.NoCaching -- Error.
 	}
 }
