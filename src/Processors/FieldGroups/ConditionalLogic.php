@@ -38,12 +38,11 @@ class ConditionalLogic {
 	}
 
 	private function migrate_rules( $groups ) {
-		// 1 group.
 		if ( count( $groups ) === 1 ) {
+			// 1 group.
 			$items = reset( $groups );
-		}
-		// Many groups: take first rule from each group.
-		else {
+		} else {
+			// Many groups: take first rule from each group.
 			foreach ( $groups as $group ) {
 				$items[] = reset( $group );
 			}
@@ -61,11 +60,11 @@ class ConditionalLogic {
 			switch ( $operator ) {
 				case '!=empty':
 					$operator = '!=';
-					$value = '';
+					$value    = '';
 					break;
 				case '==empty':
 					$operator = '=';
-					$value = '';
+					$value    = '';
 					break;
 				case '==contains':
 					$operator = 'contains';

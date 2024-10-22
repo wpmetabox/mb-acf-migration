@@ -40,14 +40,14 @@ class Fields {
 	private function migrate_field() {
 		$settings = unserialize( $this->field->post_content );
 
-		$ignore_types = ['link', 'accordion', 'clone'];
+		$ignore_types = [ 'link', 'accordion', 'clone' ];
 		if ( in_array( $settings['type'], $ignore_types ) ) {
 			return;
 		}
 
-		$settings['id']   = $this->field->post_excerpt;
+		$settings['id'] = $this->field->post_excerpt;
 
-		$args = [
+		$args       = [
 			'settings' => $settings,
 			'post_id'  => $this->field->ID,
 			'storage'  => $this->storage,

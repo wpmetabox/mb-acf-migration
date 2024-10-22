@@ -14,10 +14,10 @@ class IncludeExclude {
 
 		if ( ! empty( $include ) ) {
 			$include_exclude['type'] = 'include';
-			$rules = $include;
+			$rules                   = $include;
 		} else {
 			$include_exclude['type'] = 'exclude';
-			$rules = $exclude;
+			$rules                   = $exclude;
 		}
 
 		$include_exclude = [
@@ -37,12 +37,11 @@ class IncludeExclude {
 	private function migrate_type( $type ) {
 		$items = [];
 
-		// 1 group.
 		if ( count( $this->location ) === 1 ) {
+			// 1 group.
 			$items = reset( $this->location );
-		}
-		// Many groups: take first rule from each group.
-		else {
+		} else {
+			// Many groups: take first rule from each group.
 			foreach ( $this->location as $group ) {
 				$items[] = reset( $group );
 			}
@@ -103,9 +102,10 @@ class IncludeExclude {
 				return get_post( $value )->post_title;
 			case 'taxonomy':
 				list( $taxonomy, $slug ) = explode( ':', $value );
-				$term = get_term_by( 'slug', $slug, $taxonomy );
+				$term                    = get_term_by( 'slug', $slug, $taxonomy );
 				return $term->name;
-			default: return $value;
+			default:
+				return $value;
 		}
 	}
 
@@ -113,7 +113,7 @@ class IncludeExclude {
 		switch ( $name ) {
 			case 'taxonomy':
 				list( $taxonomy, $slug ) = explode( ':', $value );
-				$term = get_term_by( 'slug', $slug, $taxonomy );
+				$term                    = get_term_by( 'slug', $slug, $taxonomy );
 				return $term->term_id;
 			default:
 				return $value;

@@ -67,7 +67,8 @@ class FieldGroups extends Base {
 
 		$post_id = get_post_meta( $this->item->ID, 'meta_box_id', true );
 		if ( $post_id ) {
-			$this->post_id = $data['ID'] = $post_id;
+			$data['ID']    = $post_id;
+			$this->post_id = $post_id;
 			wp_update_post( $data );
 		} else {
 			$this->post_id = wp_insert_post( $data );
@@ -92,7 +93,7 @@ class FieldGroups extends Base {
 		$this->settings = unserialize( $this->item->post_content );
 
 		// Context.
-		if ( !empty( $this->settings['position'] ) ) {
+		if ( ! empty( $this->settings['position'] ) ) {
 			$this->settings['context'] = $this->settings['position'] === 'acf_after_title' ? 'after_title' : $this->settings['position'];
 			unset( $this->settings['position'] );
 		}
@@ -153,14 +154,14 @@ class FieldGroups extends Base {
 			$this->settings['settings_pages'] = $settings_pages;
 		}
 
-		$include_exclude = new FieldGroups\IncludeExclude( $location );
+		$include_exclude                   = new FieldGroups\IncludeExclude( $location );
 		$this->settings['include_exclude'] = $include_exclude->migrate();
 
 		unset( $this->settings['location'] );
 	}
 
 	private function migrate_fields() {
-		$fields = new FieldGroups\Fields( $this->item->ID );
+		$fields       = new FieldGroups\Fields( $this->item->ID );
 		$this->fields = $fields->migrate_fields();
 
 		update_post_meta( $this->post_id, 'fields', $this->fields );

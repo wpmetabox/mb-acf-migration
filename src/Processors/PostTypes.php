@@ -104,7 +104,6 @@ class PostTypes extends Base {
 				'post_name'    => $singular,
 			] );
 		}
-
 	}
 
 	protected function disable_post() {

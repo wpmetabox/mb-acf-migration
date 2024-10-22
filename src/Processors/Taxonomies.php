@@ -61,8 +61,6 @@ class Taxonomies extends Base {
 				'separate_items_with_commas' => Arr::get( $item, 'labels.separate_items_with_commas', 'Separate ' . $plural . ' with commas' ) ?: 'Separate ' . $plural . ' with commas',
 				'add_or_remove_items'        => Arr::get( $item, 'labels.add_or_remove_items', 'Add or remove ' . $plural ) ?: 'Add or remove ' . $plural,
 				'choose_from_most_used'      => Arr::get( $item, 'labels.choose_from_most_used', 'Choose from the most used ' . $plural ) ?: 'Choose from the most used ' . $plural,
-				'view_item'                  => Arr::get( $item, 'labels.view_item', 'View ' . $singular ) ?: 'View ' . $singular,
-				'filter_by_item'             => Arr::get( $item, 'labels.filter_by_item', 'Filter by ' . $singular ) ?: 'Filter by ' . $singular,
 				'not_found'                  => Arr::get( $item, 'labels.not_found', 'Not ' . $plural . ' found' ) ?: 'Not ' . $plural . ' found',
 				'no_terms'                   => Arr::get( $item, 'labels.no_terms', 'No ' . $plural ) ?: 'No ' . $plural,
 				'items_list_navigation'      => Arr::get( $item, 'labels.items_list_navigation', $plural . ' list navigation' ) ?: $plural . ' list navigation',

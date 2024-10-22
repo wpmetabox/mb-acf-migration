@@ -36,7 +36,7 @@ class FieldValue {
 	private function get_value_general() {
 		// Get from backup key first.
 		$backup_key = "_acf_bak_{$this->key}";
-		$value = $this->storage->get( $backup_key );
+		$value      = $this->storage->get( $backup_key );
 		if ( '' !== $value ) {
 			return $value;
 		}
@@ -120,9 +120,10 @@ class FieldValue {
 			return $value;
 		}
 
-		for ( $i = 0; $i < count( $layouts ); $i++ ) {
+		$count = count( $layouts );
+		for ( $i = 0; $i < $count; $i++ ) {
 			$layout = $layouts[ $i ];
-			$clone = [
+			$clone  = [
 				"{$this->key}_layout" => $layout,
 				$layout               => [],
 			];
