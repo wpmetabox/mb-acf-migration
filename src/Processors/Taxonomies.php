@@ -7,7 +7,7 @@ use WP_Query;
 class Taxonomies extends Base {
 	protected function get_items() {
 		// Process all post types at once.
-		if ( isset( $_SESSION['processed'] ) ) {
+		if ( ! empty( $_SESSION['processed'] ) ) {
 			return [];
 		}
 

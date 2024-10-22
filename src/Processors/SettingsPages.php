@@ -9,7 +9,7 @@ class SettingsPages extends Base {
 
 	protected function get_items() {
 		$field_group_ids = $this->get_field_group_ids();
-		if ( empty( $field_group_ids ) ) {
+		if ( ! empty( $_SESSION['processed'] ) ) {
 			return [];
 		}
 

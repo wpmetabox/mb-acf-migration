@@ -19,13 +19,14 @@ abstract class Base {
 		}
 
 		$output = [];
-		foreach( $items as $item ) {
+		foreach ( $items as $item ) {
 			$this->item = $item;
-			$output[] = $this->migrate_item();
+			$output[]   = $this->migrate_item();
 		}
 		$output = array_filter( $output );
-
-		$_SESSION['processed'] += count( $items );
+		if ( isset( $_SESSION['processed'] ) ) {
+			(int) $_SESSION['processed'] += count( $items );
+		}
 		wp_send_json_success( [
 			/* translators: %d - count items */
 			'message' => sprintf( __( 'Processed %d items...', 'mb-acf-migration' ), isset( $_SESSION['processed'] ) ? (int) $_SESSION['processed'] : 0 ) . '<br>' . implode( '<br>', $output ), // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotValidated
@@ -57,9 +58,11 @@ abstract class Base {
 			return $this->field_group_ids;
 		}
 
-		$this->field_group_ids = array_unique( Arr::get( $_SESSION, "field_groups.{$this->object_type}", [] ) );
+		if ( ! empty( $_SESSION ) ) {
+
+			$this->field_group_ids = array_unique( Arr::get( $_SESSION, "field_groups.{$this->object_type}", [] ) );
+		}
 
 		return $this->field_group_ids;
 	}
-
 }

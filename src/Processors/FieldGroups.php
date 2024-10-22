@@ -11,7 +11,7 @@ class FieldGroups extends Base {
 
 	protected function get_items() {
 		// Process all field groups at once.
-		if ( isset( $_SESSION['processed'] ) ) {
+		if ( ! empty( $_SESSION['processed'] ) ) {
 			return [];
 		}
 
