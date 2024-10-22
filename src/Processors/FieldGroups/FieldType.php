@@ -315,7 +315,7 @@ class FieldType {
 			$this->std = $std;
 		}
 
-		$api           = apply_filters( 'acf/fields/google_map/api', [] );
+		$api           = apply_filters( 'acf/fields/google_map/api', [] ); // phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores
 		$this->api_key = $api['key'] ?? '';
 
 		unset( $this->center_lat );

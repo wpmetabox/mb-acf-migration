@@ -8,6 +8,7 @@ class FieldValue {
 	private $storage;
 	private $type;
 	private $post_id;
+	private $delete_key;
 
 	public function __construct( $args ) {
 		$this->key        = $args['key'];
@@ -60,7 +61,7 @@ class FieldValue {
 		$sub_fields = $this->get_sub_fields();
 
 		foreach ( $sub_fields as $sub_field ) {
-			$settings = unserialize( $sub_field->post_content );
+			$settings = unserialize( $sub_field->post_content ); // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.serialize_unserialize
 			$sub_key  = $sub_field->post_excerpt;
 			$key      = $this->key . '_' . $sub_key;
 
@@ -90,7 +91,7 @@ class FieldValue {
 		for ( $i = 0; $i < $count; $i++ ) {
 			$clone = [];
 			foreach ( $sub_fields as $sub_field ) {
-				$settings = unserialize( $sub_field->post_content );
+				$settings = unserialize( $sub_field->post_content ); // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.serialize_unserialize
 				$sub_key  = $sub_field->post_excerpt;
 				$key      = "{$this->key}_{$i}_{$sub_key}";
 
@@ -129,7 +130,7 @@ class FieldValue {
 			];
 
 			foreach ( $sub_fields as $sub_field ) {
-				$settings = unserialize( $sub_field->post_content );
+				$settings = unserialize( $sub_field->post_content ); // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.serialize_unserialize
 				$sub_key  = $sub_field->post_excerpt;
 				$key      = "{$this->key}_{$i}_{$sub_key}";
 

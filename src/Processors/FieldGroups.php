@@ -49,7 +49,6 @@ class FieldGroups extends Base {
 		update_post_meta( $this->post_id, 'meta_box', $parser->get_settings() );
 
 		$this->disable_post();
-		// $this->delete_post();
 	}
 
 	private function create_post() {
@@ -90,7 +89,7 @@ class FieldGroups extends Base {
 	}
 
 	private function migrate_settings() {
-		$this->settings = unserialize( $this->item->post_content );
+		$this->settings = unserialize( $this->item->post_content ); // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.serialize_unserialize
 
 		// Context.
 		if ( ! empty( $this->settings['position'] ) ) {

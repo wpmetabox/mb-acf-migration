@@ -28,7 +28,7 @@ class Taxonomies extends Base {
 	}
 
 	protected function migrate_taxonomies() {
-			$item                 = unserialize( $this->item->post_content );
+			$item                 = unserialize( $this->item->post_content ); // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.serialize_unserialize
 			$plural               = Arr::get( $item, 'labels.name' );
 			$singular             = Arr::get( $item, 'labels.singular_name' );
 			$slug                 = Arr::get( $item, 'taxonomy' );
@@ -38,7 +38,7 @@ class Taxonomies extends Base {
 			$meta_box_cb          = $item['hierarchical'] ? 'post_categories_meta_box' : 'post_tags_meta_box';
 			$item['meta_box_cb']  = Arr::get( $item, 'meta_box_cb' ) ? $meta_box_cb : false;
 			$item['types']        = Arr::get( $item, 'object_type', [] ) ?: [];
-			$item['query_var']    = ( Arr::get( $item, 'query_var' ) == 'none' ) ? false : true;
+			$item['query_var']    = Arr::get( $item, 'query_var' ) !== 'none';
 			$item['rewrite']      = [
 				'slug'         => Arr::get( $item, 'rewrite.slug' ),
 				'with_front'   => Arr::get( $item, 'rewrite.with_front' ) ? true : false,

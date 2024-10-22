@@ -4,13 +4,13 @@ namespace MetaBox\ACF\Processors\Data;
 use WP_Query;
 
 class Fields {
-	private $parent;
+	private $parent_ids;
 	private $storage;
 	private $field;
 
-	public function __construct( $parent, $storage ) {
-		$this->parent  = $parent;
-		$this->storage = $storage;
+	public function __construct( $parent_ids, $storage ) {
+		$this->parent_ids = $parent_ids;
+		$this->storage    = $storage;
 	}
 
 	public function migrate_fields() {
@@ -26,7 +26,7 @@ class Fields {
 			'post_type'              => 'acf-field',
 			'post_status'            => 'any',
 			'posts_per_page'         => -1,
-			'post_parent__in'        => (array) $this->parent,
+			'post_parent__in'        => (array) $this->parent_ids,
 			'order'                  => 'ASC',
 			'orderby'                => 'menu_order',
 			'no_found_rows'          => true,
@@ -38,10 +38,10 @@ class Fields {
 	}
 
 	private function migrate_field() {
-		$settings = unserialize( $this->field->post_content );
+		$settings = unserialize( $this->field->post_content ); // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.serialize_unserialize
 
 		$ignore_types = [ 'link', 'accordion', 'clone' ];
-		if ( in_array( $settings['type'], $ignore_types ) ) {
+		if ( in_array( $settings['type'], $ignore_types, true ) ) {
 			return;
 		}
 
