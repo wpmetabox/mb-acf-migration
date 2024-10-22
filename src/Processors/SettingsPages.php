@@ -9,12 +9,12 @@ class SettingsPages extends Base {
 
 	protected function get_items() {
 		$field_group_ids = $this->get_field_group_ids();
-		if ( ! empty( $_SESSION['processed'] ) ) {
+		if ( empty( $field_group_ids ) ) {
 			return [];
 		}
 
 		// Process all settings pages at once.
-		if ( isset( $_SESSION['processed'] ) ) {
+		if ( ! empty( $_SESSION['processed'] ) ) {
 			return [];
 		}
 

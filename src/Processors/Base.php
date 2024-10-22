@@ -25,7 +25,7 @@ abstract class Base {
 		}
 		$output = array_filter( $output );
 		if ( isset( $_SESSION['processed'] ) ) {
-			(int) $_SESSION['processed'] += count( $items );
+			$_SESSION['processed'] += count( $items );
 		}
 		wp_send_json_success( [
 			/* translators: %d - count items */
@@ -59,7 +59,6 @@ abstract class Base {
 		}
 
 		if ( ! empty( $_SESSION ) ) {
-
 			$this->field_group_ids = array_unique( Arr::get( $_SESSION, "field_groups.{$this->object_type}", [] ) );
 		}
 
