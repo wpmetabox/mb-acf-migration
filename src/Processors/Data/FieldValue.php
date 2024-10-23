@@ -8,6 +8,7 @@ class FieldValue {
 	private $storage;
 	private $type;
 	private $post_id;
+	private $delete_key;
 
 	public function __construct( $args ) {
 		$this->key        = $args['key'];
@@ -36,7 +37,7 @@ class FieldValue {
 	private function get_value_general() {
 		// Get from backup key first.
 		$backup_key = "_acf_bak_{$this->key}";
-		$value = $this->storage->get( $backup_key );
+		$value      = $this->storage->get( $backup_key );
 		if ( '' !== $value ) {
 			return $value;
 		}
@@ -60,7 +61,7 @@ class FieldValue {
 		$sub_fields = $this->get_sub_fields();
 
 		foreach ( $sub_fields as $sub_field ) {
-			$settings = unserialize( $sub_field->post_content );
+			$settings = unserialize( $sub_field->post_content ); // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.serialize_unserialize
 			$sub_key  = $sub_field->post_excerpt;
 			$key      = $this->key . '_' . $sub_key;
 
@@ -90,7 +91,7 @@ class FieldValue {
 		for ( $i = 0; $i < $count; $i++ ) {
 			$clone = [];
 			foreach ( $sub_fields as $sub_field ) {
-				$settings = unserialize( $sub_field->post_content );
+				$settings = unserialize( $sub_field->post_content ); // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.serialize_unserialize
 				$sub_key  = $sub_field->post_excerpt;
 				$key      = "{$this->key}_{$i}_{$sub_key}";
 
@@ -120,15 +121,16 @@ class FieldValue {
 			return $value;
 		}
 
-		for ( $i = 0; $i < count( $layouts ); $i++ ) {
+		$count = count( $layouts );
+		for ( $i = 0; $i < $count; $i++ ) {
 			$layout = $layouts[ $i ];
-			$clone = [
+			$clone  = [
 				"{$this->key}_layout" => $layout,
 				$layout               => [],
 			];
 
 			foreach ( $sub_fields as $sub_field ) {
-				$settings = unserialize( $sub_field->post_content );
+				$settings = unserialize( $sub_field->post_content ); // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.serialize_unserialize
 				$sub_key  = $sub_field->post_excerpt;
 				$key      = "{$this->key}_{$i}_{$sub_key}";
 

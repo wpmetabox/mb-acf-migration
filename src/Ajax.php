@@ -41,8 +41,8 @@ class Ajax {
 		], true ) ) {
 			return;
 		}
-		$type = str_replace( ' ', '', ucwords( str_replace( '_', ' ', $type ) ) );
+		$type  = str_replace( ' ', '', ucwords( str_replace( '_', ' ', $type ) ) );
 		$class = "MetaBox\ACF\Processors\\$type";
-		return new $class;
+		return new $class();
 	}
 }

@@ -17,7 +17,7 @@ class FieldType {
 	}
 
 	public function __set( $name, $value ) {
-		return $this->settings[ $name ] = $value;
+		$this->settings[ $name ] = $value;
 	}
 
 	public function __isset( $name ) {
@@ -315,7 +315,7 @@ class FieldType {
 			$this->std = $std;
 		}
 
-		$api           = apply_filters( 'acf/fields/google_map/api', [] );
+		$api           = apply_filters( 'acf/fields/google_map/api', [] ); // phpcs:ignore WordPress.NamingConventions.ValidHookName.UseUnderscores
 		$this->api_key = $api['key'] ?? '';
 
 		unset( $this->center_lat );
@@ -477,7 +477,7 @@ class FieldType {
 			];
 
 			// Setup sub-fields.
-			$sub_group['fields'] = array_filter( $layout_fields, function( $field ) use ( $layout ) {
+			$sub_group['fields'] = array_filter( $layout_fields, function ( $field ) use ( $layout ) {
 				return $field['parent_layout'] === $layout['key'];
 			} );
 

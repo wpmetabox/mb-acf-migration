@@ -11,7 +11,7 @@ class FieldGroups extends Base {
 
 	protected function get_items() {
 		// Process all field groups at once.
-		if ( isset( $_SESSION['processed'] ) ) {
+		if ( ! empty( $_SESSION['processed'] ) ) {
 			return [];
 		}
 
@@ -49,7 +49,6 @@ class FieldGroups extends Base {
 		update_post_meta( $this->post_id, 'meta_box', $parser->get_settings() );
 
 		$this->disable_post();
-		// $this->delete_post();
 	}
 
 	private function create_post() {
@@ -67,7 +66,8 @@ class FieldGroups extends Base {
 
 		$post_id = get_post_meta( $this->item->ID, 'meta_box_id', true );
 		if ( $post_id ) {
-			$this->post_id = $data['ID'] = $post_id;
+			$data['ID']    = $post_id;
+			$this->post_id = $post_id;
 			wp_update_post( $data );
 		} else {
 			$this->post_id = wp_insert_post( $data );
@@ -89,10 +89,10 @@ class FieldGroups extends Base {
 	}
 
 	private function migrate_settings() {
-		$this->settings = unserialize( $this->item->post_content );
+		$this->settings = unserialize( $this->item->post_content ); // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.serialize_unserialize
 
 		// Context.
-		if ( !empty( $this->settings['position'] ) ) {
+		if ( ! empty( $this->settings['position'] ) ) {
 			$this->settings['context'] = $this->settings['position'] === 'acf_after_title' ? 'after_title' : $this->settings['position'];
 			unset( $this->settings['position'] );
 		}
@@ -153,14 +153,14 @@ class FieldGroups extends Base {
 			$this->settings['settings_pages'] = $settings_pages;
 		}
 
-		$include_exclude = new FieldGroups\IncludeExclude( $location );
+		$include_exclude                   = new FieldGroups\IncludeExclude( $location );
 		$this->settings['include_exclude'] = $include_exclude->migrate();
 
 		unset( $this->settings['location'] );
 	}
 
 	private function migrate_fields() {
-		$fields = new FieldGroups\Fields( $this->item->ID );
+		$fields       = new FieldGroups\Fields( $this->item->ID );
 		$this->fields = $fields->migrate_fields();
 
 		update_post_meta( $this->post_id, 'fields', $this->fields );

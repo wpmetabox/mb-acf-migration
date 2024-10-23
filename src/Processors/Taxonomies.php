@@ -7,7 +7,7 @@ use WP_Query;
 class Taxonomies extends Base {
 	protected function get_items() {
 		// Process all post types at once.
-		if ( isset( $_SESSION['processed'] ) ) {
+		if ( ! empty( $_SESSION['processed'] ) ) {
 			return [];
 		}
 
@@ -28,7 +28,7 @@ class Taxonomies extends Base {
 	}
 
 	protected function migrate_taxonomies() {
-			$item                 = unserialize( $this->item->post_content );
+			$item                 = unserialize( $this->item->post_content ); // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.serialize_unserialize
 			$plural               = Arr::get( $item, 'labels.name' );
 			$singular             = Arr::get( $item, 'labels.singular_name' );
 			$slug                 = Arr::get( $item, 'taxonomy' );
@@ -38,7 +38,7 @@ class Taxonomies extends Base {
 			$meta_box_cb          = $item['hierarchical'] ? 'post_categories_meta_box' : 'post_tags_meta_box';
 			$item['meta_box_cb']  = Arr::get( $item, 'meta_box_cb' ) ? $meta_box_cb : false;
 			$item['types']        = Arr::get( $item, 'object_type', [] ) ?: [];
-			$item['query_var']    = ( Arr::get( $item, 'query_var' ) == 'none' ) ? false : true;
+			$item['query_var']    = Arr::get( $item, 'query_var' ) !== 'none';
 			$item['rewrite']      = [
 				'slug'         => Arr::get( $item, 'rewrite.slug' ),
 				'with_front'   => Arr::get( $item, 'rewrite.with_front' ) ? true : false,
@@ -61,8 +61,6 @@ class Taxonomies extends Base {
 				'separate_items_with_commas' => Arr::get( $item, 'labels.separate_items_with_commas', 'Separate ' . $plural . ' with commas' ) ?: 'Separate ' . $plural . ' with commas',
 				'add_or_remove_items'        => Arr::get( $item, 'labels.add_or_remove_items', 'Add or remove ' . $plural ) ?: 'Add or remove ' . $plural,
 				'choose_from_most_used'      => Arr::get( $item, 'labels.choose_from_most_used', 'Choose from the most used ' . $plural ) ?: 'Choose from the most used ' . $plural,
-				'view_item'                  => Arr::get( $item, 'labels.view_item', 'View ' . $singular ) ?: 'View ' . $singular,
-				'filter_by_item'             => Arr::get( $item, 'labels.filter_by_item', 'Filter by ' . $singular ) ?: 'Filter by ' . $singular,
 				'not_found'                  => Arr::get( $item, 'labels.not_found', 'Not ' . $plural . ' found' ) ?: 'Not ' . $plural . ' found',
 				'no_terms'                   => Arr::get( $item, 'labels.no_terms', 'No ' . $plural ) ?: 'No ' . $plural,
 				'items_list_navigation'      => Arr::get( $item, 'labels.items_list_navigation', $plural . ' list navigation' ) ?: $plural . ' list navigation',

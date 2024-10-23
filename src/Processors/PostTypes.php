@@ -7,7 +7,7 @@ use WP_Query;
 class PostTypes extends Base {
 	protected function get_items() {
 		// Process all post types at once.
-		if ( isset( $_SESSION['processed'] ) ) {
+		if ( ! empty( $_SESSION['processed'] ) ) {
 			return [];
 		}
 
@@ -29,7 +29,7 @@ class PostTypes extends Base {
 	}
 
 	private function migrate_post_types() {
-		$item                  = unserialize( $this->item->post_content );
+		$item                  = unserialize( $this->item->post_content ); // phpcs:ignore WordPress.PHP.DiscouragedPHPFunctions.serialize_unserialize
 		$plural                = Arr::get( $item, 'labels.name' );
 		$singular              = Arr::get( $item, 'labels.singular_name' );
 		$slug                  = Arr::get( $item, 'post_type' );
@@ -43,14 +43,14 @@ class PostTypes extends Base {
 		$item['hierarchical'] = Arr::get( $item, 'hierarchical' );
 		$item['supports']     = Arr::get( $item, 'supports', [] ) ?: [];
 		$item['taxonomies']   = Arr::get( $item, 'taxonomies', [] ) ?: [];
-		$item['query_var']    = ( Arr::get( $item, 'query_var' ) == 'none' ) ? false : true;
+		$item['query_var']    = Arr::get( $item, 'query_var' ) !== 'none';
 		$item['rewrite']      = [
 			'slug'       => Arr::get( $item, 'rewrite.slug' ),
 			'with_front' => Arr::get( $item, 'rewrite.with_front' ) ? true : false,
 		];
 		$singular_capability  = Arr::get( $item, 'singular_capability_name' );
 		$capability_type      = [ 'post', 'page' ];
-		if ( in_array( $singular_capability, $capability_type ) ) {
+		if ( in_array( $singular_capability, $capability_type, true ) ) {
 			$item['capability_type'] = $singular_capability;
 		} else {
 			$item['capability_type'] = 'custom';
@@ -104,7 +104,6 @@ class PostTypes extends Base {
 				'post_name'    => $singular,
 			] );
 		}
-
 	}
 
 	protected function disable_post() {

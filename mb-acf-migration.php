@@ -28,7 +28,7 @@ if ( ! function_exists( 'mb_acf_load' ) ) {
 
 		define( 'MBACF_DIR', __DIR__ );
 
-		new MetaBox\ACF\AdminPage;
-		new MetaBox\ACF\Ajax;
+		new MetaBox\ACF\AdminPage();
+		new MetaBox\ACF\Ajax();
 	}
 }
