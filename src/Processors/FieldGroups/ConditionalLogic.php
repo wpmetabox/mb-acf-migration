@@ -38,6 +38,7 @@ class ConditionalLogic {
 	}
 
 	private function migrate_rules( $groups ) {
+		$items = [];
 		if ( count( $groups ) === 1 ) {
 			// 1 group.
 			$items = reset( $groups );
