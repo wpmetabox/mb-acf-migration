@@ -1,12 +1,13 @@
-/.git
-/.github
-
 .DS_Store
 Thumbs.db
 
+.git
+.github
+
 .distignore
-.gitattributes
 .gitignore
+
 composer.json
-phpcs.xml
+composer.lock
+
 README.md

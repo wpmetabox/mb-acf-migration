@@ -5,7 +5,7 @@ Tags: meta box, custom fields, custom post types, acf, migration
 Requires at least: 5.5
 Requires PHP: 7.0
 Tested up to: 6.6.2
-Stable tag: 1.1.3
+Stable tag: 1.1.4
 License: GPLv2 or later
 
 Migrate custom fields from Advanced Custom Fields to Meta Box.
@@ -50,6 +50,9 @@ If you like this plugin, you might also like our other WordPress products:
 == Screenshots ==
 
 == Changelog ==
+
+= 1.1.4 - 2024-11-07 =
+Fix compatibility with MB Builder
 
 = 1.1.3 - 2024-11-01 =
 Improve code quality with fixes for PHPCS
