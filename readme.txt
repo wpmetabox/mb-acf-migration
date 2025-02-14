@@ -16,6 +16,9 @@ This tool helps you migrate custom fields from Advanced Custom Fields (ACF) to M
 
 **Meta Box is a powerful, professional, and lightweight toolkit for developers to create custom meta boxes and custom fields for any custom post type in WordPress.**
 
+> **Meta Box Lite**
+> We recommend using [Meta Box Lite](https://metabox.io/lite/), a feature-rich free UI version of Meta Box that provides UI and all free features for managing custom fields and dynamic content on WordPress, including post types, taxonomies, custom fields, and relationships.
+
 Switching from ACF to Meta Box gives you lots of benefits:
 
 - A wide-range of field types and options. Meta Box supports [40+ built-in WordPress custom field types](https://docs.metabox.io/field-settings/) for all your needs. You can also [effortlessly create your own field type](https://docs.metabox.io/custom-field-type/).
