@@ -1,5 +1,5 @@
 {
-  "name": "meta-box/mb-acf-migration",
+  "name": "wpmetabox/mb-acf-migration",
   "type": "wordpress-plugin",
   "keywords": [
     "wordpress",
@@ -12,7 +12,7 @@
   ],
   "description": "Migrate ACF custom fields to Meta Box",
   "homepage": "https://metabox.io",
-  "license": "GPL-2.0",
+  "license": "GPL-2.0-or-later",
   "autoload": {
     "psr-4": {
       "MetaBox\\ACF\\": "src/"
@@ -21,18 +21,8 @@
   "config": {
 		"prepend-autoloader": false
 	},
-  "repositories": [
-		{
-			"type": "git",
-			"url": "https://github.com/wpmetabox/support.git"
-		},
-    {
-			"type": "git",
-			"url": "https://github.com/wpmetabox/mbb-parser.git"
-		}
-	],
   "require": {
-		"meta-box/support": "dev-master",
-    "meta-box/mbb-parser": "dev-master"
+		"wpmetabox/support": "dev-master",
+    "wpmetabox/mbb-parser": "dev-master"
 	}
 }
