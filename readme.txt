@@ -4,8 +4,8 @@ Donate link: https://metabox.io/pricing/
 Tags: meta box, custom fields, custom post types, acf, migration
 Requires at least: 5.5
 Requires PHP: 7.0
-Tested up to: 6.6.2
-Stable tag: 1.1.4
+Tested up to: 6.7.2
+Stable tag: 1.1.5
 License: GPLv2 or later
 
 Migrate custom fields from Advanced Custom Fields to Meta Box.
@@ -53,6 +53,9 @@ If you like this plugin, you might also like our other WordPress products:
 == Screenshots ==
 
 == Changelog ==
+
+= 1.1.5 - 2025-04-01 =
+Update code dependencies
 
 = 1.1.4 - 2024-11-07 =
 Fix compatibility with MB Builder
