@@ -16,3 +16,10 @@ Switching from ACF to Meta Box gives you lots of benefits:
 - Meta Box has a ton of [free and premium extensions](https://metabox.io/plugins/) available to further extend the already powerful core Meta Box plugin so you can supercharge your custom fields in WordPress.
 
 See more details at the [comparison page between ACF and Meta Box](https://metabox.io/meta-box-vs-acf/).
+
+### You might also like
+
+If you like this plugin, you might also like our other WordPress products:
+
+- [Slim SEO](https://wpslimseo.com) - A fast, lightweight and full-featured SEO plugin for WordPress with minimal configuration.
+- [GretaThemes](https://gretathemes.com) - Free and premium WordPress themes that clean, simple and just work.
