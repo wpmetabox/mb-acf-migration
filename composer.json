@@ -1,28 +1,28 @@
 {
-  "name": "wpmetabox/mb-acf-migration",
-  "type": "wordpress-plugin",
-  "keywords": [
-    "wordpress",
-    "wordpress-plugin",
-    "acf",
-    "advanced-custom-fields",
-    "meta-box",
-    "custom-fields",
-    "custom-field"
-  ],
-  "description": "Migrate ACF custom fields to Meta Box",
-  "homepage": "https://metabox.io",
-  "license": "GPL-2.0-or-later",
-  "autoload": {
-    "psr-4": {
-      "MetaBox\\ACF\\": "src/"
-    }
-  },
-  "config": {
+	"name": "wpmetabox/mb-acf-migration",
+	"type": "wordpress-plugin",
+	"keywords": [
+		"wordpress",
+		"wordpress-plugin",
+		"acf",
+		"advanced-custom-fields",
+		"meta-box",
+		"custom-fields",
+		"custom-field"
+	],
+	"description": "Migrate ACF custom fields to Meta Box",
+	"homepage": "https://metabox.io",
+	"license": "GPL-2.0-or-later",
+	"autoload": {
+		"psr-4": {
+			"MetaBox\\ACF\\": "src/"
+		}
+	},
+	"config": {
 		"prepend-autoloader": false
 	},
-  "require": {
-		"wpmetabox/support": "dev-master",
-    "wpmetabox/mbb-parser": "dev-master"
+	"require": {
+		"wpmetabox/support": "^1",
+		"wpmetabox/mbb-parser": "^2"
 	}
 }

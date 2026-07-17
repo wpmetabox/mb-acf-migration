@@ -2,10 +2,10 @@
 Contributors: elightup, metabox, rilwis
 Donate link: https://metabox.io/pricing/
 Tags: meta box, custom fields, custom post types, acf, migration
-Requires at least: 6.5
-Requires PHP: 7.2
-Tested up to: 6.8.2
-Stable tag: 1.1.6
+Requires at least: 6.6
+Requires PHP: 7.4
+Tested up to: 7.0.1
+Stable tag: 1.1.7
 License: GPLv2 or later
 
 Migrate custom fields from Advanced Custom Fields to Meta Box.
@@ -34,7 +34,9 @@ See more details at the [comparison page between ACF and Meta Box](https://metab
 If you like this plugin, you might also like our other WordPress products:
 
 - [Slim SEO](https://wpslimseo.com) - A fast, lightweight and full-featured SEO plugin for WordPress with minimal configuration.
+- [Falcon](https://wpfalcon.pro) - A lightweight companion for making WordPress faster, cleaner, and more secure.
 - [GretaThemes](https://gretathemes.com) - Free and premium WordPress themes that clean, simple and just work.
+- [Auto Listings](https://wpautolistings.com) - A car sale and dealership plugin for WordPress.
 
 == Installation ==
 
@@ -51,6 +53,9 @@ If you like this plugin, you might also like our other WordPress products:
 == Screenshots ==
 
 == Changelog ==
+
+= 1.1.7 - 206-07-17 =
+Update dependencies
 
 = 1.1.6 - 2025-09-15 =
 Update dependencies
