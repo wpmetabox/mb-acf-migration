@@ -7,21 +7,24 @@
     "content-hash": "1df860c6f66a9a3ca00e51a5cf8dcd99",
     "packages": [
         {
-            "name": "riimu/kit-phpencoder",
-            "version": "v2.4.2",
+            "name": "wpmetabox/kit-phpencoder",
+            "version": "v2.4.3",
             "source": {
                 "type": "git",
-                "url": "https://github.com/Riimu/Kit-PHPEncoder.git",
-                "reference": "72ff7825de193b272e17b228394819dbfc638e72"
+                "url": "https://github.com/wpmetabox/kit-phpencoder.git",
+                "reference": "d6a0c4f0002347bfce6a21c7f77a3d56727bce1a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Riimu/Kit-PHPEncoder/zipball/72ff7825de193b272e17b228394819dbfc638e72",
-                "reference": "72ff7825de193b272e17b228394819dbfc638e72",
+                "url": "https://api.github.com/repos/wpmetabox/kit-phpencoder/zipball/d6a0c4f0002347bfce6a21c7f77a3d56727bce1a",
+                "reference": "d6a0c4f0002347bfce6a21c7f77a3d56727bce1a",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.6.0"
+                "php": ">=7.1"
+            },
+            "replace": {
+                "riimu/kit-phpencoder": "self.version"
             },
             "type": "library",
             "autoload": {
@@ -50,27 +53,26 @@
                 "variable"
             ],
             "support": {
-                "issues": "https://github.com/Riimu/Kit-PHPEncoder/issues",
-                "source": "https://github.com/Riimu/Kit-PHPEncoder/tree/v2.4.2"
+                "source": "https://github.com/wpmetabox/kit-phpencoder/tree/v2.4.3"
             },
-            "time": "2022-12-10T18:12:25+00:00"
+            "time": "2026-11-11T06:55:25+00:00"
         },
         {
             "name": "wpmetabox/mbb-parser",
-            "version": "2.0.9",
+            "version": "2.1.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/wpmetabox/mbb-parser.git",
-                "reference": "e0663efe56b260c0ec81debc029ef68cdde511b0"
+                "reference": "5e2a2256b553ea18f572ba3fd9fb2dc28dff259e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/wpmetabox/mbb-parser/zipball/e0663efe56b260c0ec81debc029ef68cdde511b0",
-                "reference": "e0663efe56b260c0ec81debc029ef68cdde511b0",
+                "url": "https://api.github.com/repos/wpmetabox/mbb-parser/zipball/5e2a2256b553ea18f572ba3fd9fb2dc28dff259e",
+                "reference": "5e2a2256b553ea18f572ba3fd9fb2dc28dff259e",
                 "shasum": ""
             },
             "require": {
-                "riimu/kit-phpencoder": "^2.4",
+                "wpmetabox/kit-phpencoder": "^2.4.3",
                 "wpmetabox/support": "^1"
             },
             "type": "library",
@@ -86,9 +88,9 @@
             "description": "Parse meta box settings from JSON",
             "support": {
                 "issues": "https://github.com/wpmetabox/mbb-parser/issues",
-                "source": "https://github.com/wpmetabox/mbb-parser/tree/2.0.9"
+                "source": "https://github.com/wpmetabox/mbb-parser/tree/2.1.6"
             },
-            "time": "2026-07-04T09:37:00+00:00"
+            "time": "2026-11-11T12:48:38+00:00"
         },
         {
             "name": "wpmetabox/support",
